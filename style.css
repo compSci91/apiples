@@ -1,3 +1,9 @@
+body {
+  text-align: center;
+}
+.wrapper {
+  margin: 0 auto;
+}
 .shape {
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
