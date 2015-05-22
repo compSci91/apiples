@@ -1,0 +1,48 @@
+@goodColor: #0d0;
+@badColor: #f00;
+@timedOutColor: #ff0;
+@unknownStateColor: #ccc;
+
+@defaultCornerRadius: 30px;
+
+@defaultShapesSize: 200px;
+
+.RoundedShape(@radius: @defaultCornerRadius) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	border-radius: @radius;
+}
+
+.shape {
+	.RoundedShape;
+	display: inline-block;
+	width: @defaultShapesSize;
+	height: @defaultShapesSize;
+	background: @unknownStateColor;
+	margin: 20px;
+	text-align: center;
+}
+
+.shape-content {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	font-family: arial, helvetica, sans-serif;
+	font-size: 2em;
+}
+
+#good {
+	background: @goodColor;
+}
+
+#bad {
+	background: @badColor;
+}
+
+#timed-out {
+	background: @timedOutColor;
+}
+
+#unknown {
+	background: @unknownStateColor;
+}
