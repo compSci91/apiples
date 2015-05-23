@@ -10,3 +10,7 @@ to run:
 - open a browser and use the address: localhost:8000
 - click the 'start timed action' button' to start monitoring (i.e. sending requests to the servers)
 - click the 'stop timed action' button to stop monitoring (i.e. stop making requests to the servers)
+
+
+notes:
+- there isn't a whole lot of output in the main browser window (other than the color of the DIVs).  you can get information about what is going on under the covers by opening up the browsers developer tools dashboard and looking in the console and the network activity.
