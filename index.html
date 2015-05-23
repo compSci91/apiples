@@ -2,21 +2,14 @@
 <html>
 	<head>
 	    <link rel="stylesheet" href="style.css">
+	    <script src="js/jquery-1.11.3.min.js"></script>
+	    <script type="text/javascript" src="js/main.js"></script>
 	</head>
-	<body>
-		<div class="wrapper">
-		    <div class="shape" id="good">
-		    	<div class="shape-content">good</div>
-		    </div>
-		    <div class="shape" id="bad">
-		    	<div class="shape-content">bad</div>
-		    </div>	
-		    <div class="shape" id="timed-out">
-		    	<div class="shape-content">timed out</div>
-		    </div>	
-		    <div class="shape" id="unknown">
-		    	<div class="shape-content">unknown</div>
-		    </div>
+	<body onload="buildNodes()">
+		<div id="wrapper">
+		    <button type="button" onclick="startTimedAction()">start timed action</button>
+		    <button type="button" onclick="stopTimedAction()">stop timed action</button>
+		    <br>
 		</div>
 	</body>
 </html>

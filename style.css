@@ -1,7 +1,7 @@
 body {
   text-align: center;
 }
-.wrapper {
+#wrapper {
   margin: 0 auto;
 }
 .shape {
@@ -11,9 +11,9 @@ body {
   display: inline-block;
   width: 200px;
   height: 200px;
-  background: #cccccc;
   margin: 20px;
   text-align: center;
+  background: #cccccc;
 }
 .shape-content {
   position: relative;
@@ -21,16 +21,4 @@ body {
   transform: translateY(-50%);
   font-family: arial, helvetica, sans-serif;
   font-size: 2em;
-}
-#good {
-  background: #00dd00;
-}
-#bad {
-  background: #ff0000;
-}
-#timed-out {
-  background: #ffff00;
-}
-#unknown {
-  background: #cccccc;
 }
