@@ -32,9 +32,9 @@ function changeNodeColorForSuccess(node) {
 	}
 };
 
-function buildNodes() {
+function buildNodes(doc) {
 	for (var i in urls) {
-		var wrapperDiv = document.getElementById('wrapper');
+		var wrapperDiv = doc.getElementById('wrapper');
 		wrapperDiv.innerHTML += createMonitorDiv(urls[i], i);
 	}
 };
