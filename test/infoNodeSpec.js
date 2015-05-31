@@ -5,19 +5,18 @@ describe('infoNode', function() {
     describe('#createInfoNode', function() {
 
         var url = "http://myurl.com";
-        var expectedDiv = "<div class='shape-content'>myurl</div>";
-
-        it('should have a createInfoNode method', function() {
-            assert.equal(typeof infoNode, 'object');
-            assert.equal(typeof infoNode.createContentNode, 'function');
-        });
+        var expectedContentDiv = "<div class='shape-content'>myurl</div>";
+        var expectedInfoDiv = "<div class='shape'>" + expectedContentDiv + "</div>";
 
         it('should create a div with the basename of the url as the content', function() {
-            var actualDiv = infoNode.createContentNode(url);
-            assert.equal(expectedDiv, actualDiv);
+            var actualDiv = infoNode._createContentNode(url);
+            assert.equal(expectedContentDiv, actualDiv);
         });
 
-        it('should', function() {});
+        it('should create a div that contains the contentNode', function() {
+            var actualDiv = infoNode.createInfoNode(url);
+            assert.equal(expectedInfoDiv, actualDiv);
+        });
     });
 });
 
