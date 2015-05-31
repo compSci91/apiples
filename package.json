@@ -11,8 +11,10 @@
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-mocha-test": "^0.12.7",
+    "jsdom": "^3.1.2",
     "mocha": "^2.2.5",
-    "should": "^6.0.3"
+    "should": "^6.0.3",
+    "sinon": "^1.14.1"
   },
   "dependnecies": {
     "jquery": "^2.1.4"
