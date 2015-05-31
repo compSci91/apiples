@@ -1,5 +1,5 @@
 var assert = require('assert');
-var utilities = require('../js/utilities');
+var utilities = require('../../js/utilities');
 
 describe('utilities', function() {
     describe('#getTopLevelDomainNameFrom', function() {

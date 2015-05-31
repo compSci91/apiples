@@ -1,5 +1,5 @@
 var assert = require('assert');
-var infoNode = require('../js/infoNode.js');
+var infoNode = require('../../js/infoNode.js');
 
 describe('infoNode', function() {
     describe('#createInfoNode', function() {
