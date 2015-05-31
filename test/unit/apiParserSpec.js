@@ -4,7 +4,7 @@ var sinon = require('sinon');
 var apiParser = require('../../js/apiParser.js');
 
 describe('apiParser', function() {
-    describe.only('#getApiRequestJSONFiles', function() {
+    describe('#getApiRequestJSONFiles', function() {
         it('should keep some shit straight', function() {
             apiParser.should.be.type('object');
             apiParser.parseApiFiles.should.be.type('function');
@@ -22,5 +22,17 @@ describe('apiParser', function() {
 
             actualApiRequestArray.should.eql(expectedApiRequestArray);
         });        
+
+        it('should create an apiRequest object from an apiRequest.JSON file', function() {
+            var mockedApiRequestJsonFile = "{ \"name\" :\"foo\", \"url\" : \"http://spargonaut.com\", \"type\" : \"GET\" }";
+
+            var fs = require('fs');
+            sinon.stub(fs, 'readFileSync').returns(mockedApiRequestJsonFile);
+
+            var actualApiJSON = apiParser.getApiRequest();
+            var expectedJSON = { name: 'foo', url: 'http://spargonaut.com', type: 'GET' };
+
+            actualApiJSON.should.eql(expectedJSON);
+        });
     });
 });

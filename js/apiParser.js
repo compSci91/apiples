@@ -14,8 +14,14 @@ var apiParser = {
             return !re.test(item);
         });
         return filteredFiles
-    }
+    },
 
+    getApiRequest : function() {
+        var filename = apiRequestJSONLocation + "/GET_foo.txt_spargonaut.com.json";
+        var jsonFileContent = fs.readFileSync(filename, 'utf8');
+        var apiRequestModel = JSON.parse(jsonFileContent);
+        return apiRequestModel;
+    }
 };
 
 module.exports = apiParser;
