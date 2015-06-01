@@ -1,4 +1,5 @@
 var apiParser = require('./apiParser.js');
+var nodeBuilder = require('./nodeBuilder.js');
 
 var app = {
     buildNodes : function(doc) {
@@ -6,9 +7,11 @@ var app = {
         var wrapperDiv = doc.getElementById('wrapper');
 
         var apiModels = apiParser.getApiModels();
+        var allNodesHtml = '';
         for (apiModel in apiModels) {
-            wrapperDiv.innerHTML += '<div>foo</div>';
+            allNodesHtml += nodeBuilder.buildNodeFrom(apiModel);
         }
+        wrapperDiv.innerHTML = allNodesHtml;
     },
 }
 

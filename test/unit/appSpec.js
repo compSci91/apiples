@@ -5,7 +5,15 @@ var jsdom = require('jsdom').jsdom;
 
 var app = require('../../js/app.js');
 
+
 describe('app', function() {
+
+    var nodeBuilder = require('../../js/nodeBuilder.js');
+
+    afterEach(function() {
+        sinon.restore(nodeBuilder);
+    });
+
     describe('#buildNodes', function() {
         it('should have a buildNodes method', function() {
             assert.equal(typeof app, 'object');
@@ -23,9 +31,16 @@ describe('app', function() {
             var apiParser = require('../../js/apiParser.js');
             sinon.stub(apiParser, 'getApiModels').returns(mockedModelArray);
 
+            var mockedFooHtml = '<div class="shape-content">foo</div>';
+            var mockedSpargonautHtml = '<div class="shape-content">spargonaut</div>';
+
+            sinon.stub(nodeBuilder, 'buildNodeFrom')
+                .onFirstCall().returns(mockedFooHtml)
+                .onSecondCall().returns(mockedSpargonautHtml);
+
             app.buildNodes(doc);
             var actualDiv = doc.getElementById('wrapper').innerHTML;
-            var expectedDiv = "<div>foo</div><div>foo</div>";
+            var expectedDiv = '<div class="shape-content">foo</div><div class="shape-content">spargonaut</div>';
 
             actualDiv.should.eql(expectedDiv);
         });
