@@ -16,11 +16,22 @@ var apiParser = {
         return filteredFiles
     },
 
-    getApiRequest : function() {
-        var filename = apiRequestJSONLocation + "/GET_foo.txt_spargonaut.com.json";
+    getApiRequest : function(filename) {
+        var fileToParse = apiRequestJSONLocation + "/" + filename;
         var jsonFileContent = fs.readFileSync(filename, 'utf8');
-        var apiRequestModel = JSON.parse(jsonFileContent);
-        return apiRequestModel;
+        return JSON.parse(jsonFileContent);
+    },
+
+    getApiModels : function() {
+        var apiRequestJSONFiles = this.getApiRequestJSONFiles();
+        var apiModel;
+        var apiModels = [];
+        var filename;
+        for (filename in apiRequestJSONFiles) {
+            apiModel = this.getApiRequest(filename);
+            apiModels.push(apiModel);
+        };
+        return apiModels;
     }
 };
 
