@@ -32,6 +32,10 @@ var apiParser = {
             apiModels.push(apiModel);
         };
         return apiModels;
+    },
+
+    createApiModelsFile : function(fileToWrite) {
+        fs.writeSync(fileToWrite, '');
     }
 };
 
