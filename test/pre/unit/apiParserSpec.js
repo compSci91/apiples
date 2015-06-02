@@ -1,7 +1,7 @@
 var should = require('should');
 var sinon = require('sinon');
 
-var apiParser = require('../../js/apiParser.js');
+var apiParser = require('../../../src/pre/apiParser.js');
 
 describe('apiParser', function() {
     describe('#getApiRequestJSONFiles', function() {

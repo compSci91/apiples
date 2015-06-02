@@ -1,7 +1,7 @@
 var assert = require('assert');
 var should = require('should');
 
-var nodeBuilder = require('../../js/nodeBuilder.js');
+var nodeBuilder = require('../../../src/js/nodeBuilder.js');
 
 describe('nodeBuilder', function() {
     it('should keep some shit straight', function() {

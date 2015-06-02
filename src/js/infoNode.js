@@ -1,5 +1,3 @@
-var utilities = require('./utilities.js');
-
 var infoNode = {
     createInfoNode : function(url) {
         var contentNode = this._createContentNode(url);
@@ -8,7 +6,7 @@ var infoNode = {
     },
 
     _createContentNode : function(url) {
-        var urlTLD = utilities.getTopLevelDomainNameFrom(url);
+        var urlTLD = "FIXME";
         return "<div class='shape-content'>" + urlTLD + "</div>";
     }
 };
