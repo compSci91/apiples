@@ -60,13 +60,27 @@ describe('apiParser', function() {
     });
 
     describe('#createApiModelsFile', function() {
+
+        var modelsFilenameAndPath = '../js/models.js'
+
         it('should create the models file', function() {
-            var modelsFilenameAndPath = '../js/models.js'
-            var fsSpy = sinon.spy(fs, 'writeSync');
+            var mockedFooFile = "{\"name\" : \"foo\", \"url\" : \"http://example.com\", \"type\" : \"GET\" }";
+            var fsReadStub = sinon.stub(fs, 'readFileSync').returns(mockedFooFile);
+            var fsWriteStub = sinon.stub(fs, 'writeFileSync');
 
             apiParser.createApiModelsFile(modelsFilenameAndPath);
-            assert(fsSpy.calledOnce);
+            assert(fsWriteStub.calledOnce);
         });
 
+        it('should modify the models file with the api models', function() {
+            var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";
+            var fsReadStub = sinon.stub(fs, 'readFileSync').returns(mockedFooFile);
+
+            var fsMock = sinon.mock(fs);
+            var expectation = fsMock.expects('writeFileSync').withArgs(modelsFilenameAndPath);
+            
+            apiParser.createApiModelsFile(modelsFilenameAndPath);
+            expectation.verify();
+        });
     });
 });

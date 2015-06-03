@@ -18,7 +18,7 @@ var apiParser = {
 
     getApiRequest : function(filename) {
         var fileToParse = apiRequestJSONLocation + "/" + filename;
-        var jsonFileContent = fs.readFileSync(filename, 'utf8');
+        var jsonFileContent = fs.readFileSync(fileToParse, 'utf8');
         return JSON.parse(jsonFileContent);
     },
 
@@ -27,15 +27,25 @@ var apiParser = {
         var apiModel;
         var apiModels = [];
         var filename;
-        for (filename in apiRequestJSONFiles) {
-            apiModel = this.getApiRequest(filename);
+        for (i in apiRequestJSONFiles) {
+            apiModel = this.getApiRequest(apiRequestJSONFiles[i]);
             apiModels.push(apiModel);
         };
         return apiModels;
     },
 
     createApiModelsFile : function(fileToWrite) {
-        fs.writeSync(fileToWrite, '');
+        // FIXME - this method should be tested better
+        var apiModels = this.getApiModels();
+        var stringToWrite = '';
+        for (index in apiModels) {
+            stringToWrite += JSON.stringify(apiModels[index]);
+        }
+        var fileHeader = "module.exports = function () { return [ ";
+        var fileFooter = ' ]}';
+        var fileContentToWrite = fileHeader + stringToWrite + fileFooter;
+        var buffer = new Buffer(fileContentToWrite);
+        fs.writeFileSync(fileToWrite, buffer);
     }
 };
 
