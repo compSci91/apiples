@@ -7,8 +7,17 @@ var apiParser = require('../../../src/pre/apiParser.js');
 describe('apiParser', function() {
 
     var fs = require('fs');
+
+    var fooFileName = "GET_something.txt_foo.com.json";
     var spargonautFileName = "GET_foo.txt_spargonaut.com.json";
-    var mockedSpargonautFile = "{ \"name\" :\"spargonaut\", \"url\" : \"http://spargonaut.com\", \"type\" : \"GET\" }";
+
+    var mockedSpargonautFile = "{\"name\":\"spargonaut\",\"url\":\"http://spargonaut.com\",\"type\":\"GET\"}";
+    var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";
+
+    var fileHeader = "module.exports = function () { return [ ";
+    var fileFooter = ' ]}';
+
+    var mockedFileArray = ['.gitkeep', 'GET_foo.txt_bar.com'];
 
     afterEach(function() {
         sinon.restore(fs);
@@ -16,7 +25,6 @@ describe('apiParser', function() {
 
     describe('#getApiRequestJSONFiles', function() {
         it('should ignore filenames that start with a dot', function() {
-            var mockedFileArray = ['.gitkeep', 'GET_foo.txt_bar.com'];
             sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
 
             var actualApiRequestArray = apiParser.getApiRequestJSONFiles();
@@ -41,17 +49,14 @@ describe('apiParser', function() {
 
     describe('#getApiModels', function() {
         it('should create an array of apiRequest Objects from the json files in the api directory', function() {
-            var mockedFooFile = "{\"name\" : \"foo\", \"url\" : \"http://example.com\", \"type\" : \"GET\" }";
             sinon.stub(fs, 'readFileSync')
                 .onFirstCall().returns(mockedFooFile)
                 .onSecondCall().returns(mockedSpargonautFile);
 
-            var fooFileName = "GET_something.txt_foo.com.json";
             sinon.stub(fs, 'readdirSync').returns([fooFileName, spargonautFileName]);
 
             var expectedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
             var expectedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
-
             var expectedArray = [expectedFooJSON, expectedSpargonautJSON];
 
             var actualArray = apiParser.getApiModels();
@@ -60,27 +65,30 @@ describe('apiParser', function() {
     });
 
     describe('#createApiModelsFile', function() {
+        it('should create the models file with an api model', function() {
+            sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
 
-        var modelsFilenameAndPath = '../js/models.js'
+            var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";
+            sinon.stub(fs, 'readFileSync').returns(mockedFooFile);
 
-        it('should create the models file', function() {
-            var mockedFooFile = "{\"name\" : \"foo\", \"url\" : \"http://example.com\", \"type\" : \"GET\" }";
-            var fsReadStub = sinon.stub(fs, 'readFileSync').returns(mockedFooFile);
-            var fsWriteStub = sinon.stub(fs, 'writeFileSync');
-
-            apiParser.createApiModelsFile(modelsFilenameAndPath);
-            assert(fsWriteStub.calledOnce);
+            var fileHeader = "module.exports = function () { return [ ";
+            var apiModels = apiParser.createApiModelsFile();
+            var fileFooter = ' ]}';
+            var expectedApiModels = fileHeader + mockedFooFile + fileFooter;
+            apiModels.should.eql(expectedApiModels);
         });
 
-        it('should modify the models file with the api models', function() {
-            var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";
-            var fsReadStub = sinon.stub(fs, 'readFileSync').returns(mockedFooFile);
+        it('should separate multiple api models by a comma', function () {
 
-            var fsMock = sinon.mock(fs);
-            var expectation = fsMock.expects('writeFileSync').withArgs(modelsFilenameAndPath);
-            
-            apiParser.createApiModelsFile(modelsFilenameAndPath);
-            expectation.verify();
+            sinon.stub(fs, 'readdirSync').returns([fooFileName, spargonautFileName]);
+
+            sinon.stub(fs, 'readFileSync')
+                .onFirstCall().returns(mockedFooFile)
+                .onSecondCall().returns(mockedSpargonautFile);
+
+            var expectedApiModels = fileHeader + mockedFooFile + ", " + mockedSpargonautFile + fileFooter;
+            var apiModels = apiParser.createApiModelsFile();
+            apiModels.should.eql(expectedApiModels);
         });
     });
 });

@@ -34,18 +34,16 @@ var apiParser = {
         return apiModels;
     },
 
-    createApiModelsFile : function(fileToWrite) {
-        // FIXME - this method should be tested better
+    createApiModelsFile : function() {
         var apiModels = this.getApiModels();
         var stringToWrite = '';
         for (index in apiModels) {
-            stringToWrite += JSON.stringify(apiModels[index]);
+            stringToWrite += JSON.stringify(apiModels[index]) + ", ";
         }
+        stringToWrite = stringToWrite.substring(0, (stringToWrite.length - 2));
         var fileHeader = "module.exports = function () { return [ ";
         var fileFooter = ' ]}';
-        var fileContentToWrite = fileHeader + stringToWrite + fileFooter;
-        var buffer = new Buffer(fileContentToWrite);
-        fs.writeFileSync(fileToWrite, buffer);
+        return fileHeader + stringToWrite + fileFooter;
     }
 };
 
