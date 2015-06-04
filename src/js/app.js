@@ -6,16 +6,14 @@ var app = {
     buildNodes : function(doc) {
 
         var wrapperDiv = doc.getElementById('wrapper');
-        console.log(models());
 
-        //var apiModels = apiParser.getApiModels();
-        var apiModels = models();
+        var apiModels = models.getModels();
         var allNodesHtml = '';
         for (i in apiModels) {
             allNodesHtml += nodeBuilder.buildNodeFrom(apiModels[i]);
         }
         wrapperDiv.innerHTML += allNodesHtml;
-    },
+    }
 }
 
 module.exports = app;

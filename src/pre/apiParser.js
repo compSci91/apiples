@@ -41,8 +41,8 @@ var apiParser = {
             stringToWrite += JSON.stringify(apiModels[index]) + ", ";
         }
         stringToWrite = stringToWrite.substring(0, (stringToWrite.length - 2));
-        var fileHeader = "module.exports = function () { return [ ";
-        var fileFooter = ' ]}';
+        var fileHeader = "module.exports = { getModels : function () { return [ ";
+        var fileFooter = ' ]}}';
         return fileHeader + stringToWrite + fileFooter;
     }
 };

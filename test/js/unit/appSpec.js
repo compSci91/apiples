@@ -10,17 +10,17 @@ describe('app', function() {
 
     var nodeBuilder = require('../../../src/js/nodeBuilder.js');
 
-    afterEach(function() {
+    afterEach(function () {
         sinon.restore(nodeBuilder);
     });
 
-    describe('#buildNodes', function() {
+    describe('#buildNodes', function () {
         it('should have a buildNodes method', function() {
             assert.equal(typeof app, 'object');
             assert.equal(typeof app.buildNodes, 'function');
         });
 
-        xit('should add a node to the wrapper element for every api model found by the apiParser', function() {
+        it('should add a node to the wrapper element for every api model found by the apiParser', function() {
             var stubbedDiv = "<div id='wrapper'></div>";
             var doc = jsdom(stubbedDiv);
 
@@ -28,8 +28,8 @@ describe('app', function() {
             var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
             var mockedModelArray = [mockedFooJSON, mockedSpargonautJSON];
 
-            var apiParser = require('../../js/apiParser.js');
-            sinon.stub(apiParser, 'getApiModels').returns(mockedModelArray);
+            var apiModels = require('../../../src/js/models.js');
+            sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
 
             var mockedFooHtml = '<div class="shape-content">foo</div>';
             var mockedSpargonautHtml = '<div class="shape-content">spargonaut</div>';

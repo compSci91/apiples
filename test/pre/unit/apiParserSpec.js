@@ -14,8 +14,8 @@ describe('apiParser', function() {
     var mockedSpargonautFile = "{\"name\":\"spargonaut\",\"url\":\"http://spargonaut.com\",\"type\":\"GET\"}";
     var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";
 
-    var fileHeader = "module.exports = function () { return [ ";
-    var fileFooter = ' ]}';
+    var fileHeader = "module.exports = { getModels : function () { return [ ";
+    var fileFooter = ' ]}}';
 
     var mockedFileArray = ['.gitkeep', 'GET_foo.txt_bar.com'];
 
@@ -71,9 +71,7 @@ describe('apiParser', function() {
             var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";
             sinon.stub(fs, 'readFileSync').returns(mockedFooFile);
 
-            var fileHeader = "module.exports = function () { return [ ";
             var apiModels = apiParser.createApiModelsFile();
-            var fileFooter = ' ]}';
             var expectedApiModels = fileHeader + mockedFooFile + fileFooter;
             apiModels.should.eql(expectedApiModels);
         });
