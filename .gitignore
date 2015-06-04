@@ -6,3 +6,4 @@ results.txt
 apis/*
 .idea
 .DS_Store
+models.js
