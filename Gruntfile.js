@@ -1,11 +1,11 @@
 module.exports = function(grunt) {
 
-     // Load the Grunt plugins.
     grunt.loadNpmTasks('grunt-contrib-compass');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-execute');
 
     grunt.registerTask('default', 'mochaTest');
 
@@ -27,8 +27,12 @@ module.exports = function(grunt) {
                 src : 'src/js/*.js',
                 dest : './bundle.js'
             }
+        },
+
+        execute : {
+            target : {
+                src : ['src/pre/app.js']
+            }
         }
     });
-
-
 };
