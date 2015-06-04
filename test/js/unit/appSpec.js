@@ -6,21 +6,30 @@ var jsdom = require('jsdom').jsdom;
 var app = require('../../../src/js/app.js');
 
 
-describe('app', function() {
+describe('app', function () {
 
     var nodeBuilder = require('../../../src/js/nodeBuilder.js');
+    var apiModels = require('../../../src/js/models.js');
 
     afterEach(function () {
         sinon.restore(nodeBuilder);
+        sinon.restore(apiModels);
     });
 
     describe('#buildNodes', function () {
-        it('should have a buildNodes method', function() {
+        var stubbedDiv;
+        var doc;
+        beforeEach(function () {
+            stubbedDiv = "<div id='wrapper'></div>";
+            doc = jsdom(stubbedDiv);
+        });
+
+        it('should have a buildNodes method', function () {
             assert.equal(typeof app, 'object');
             assert.equal(typeof app.buildNodes, 'function');
         });
 
-        it('should add a node to the wrapper element for every api model found by the apiParser', function() {
+        it('should add a node to the wrapper element for every api model found by the apiParser', function () {
             var stubbedDiv = "<div id='wrapper'></div>";
             var doc = jsdom(stubbedDiv);
 
@@ -43,6 +52,20 @@ describe('app', function() {
             var expectedDiv = '<div class="shape-content">foo</div><div class="shape-content">spargonaut</div>';
 
             actualDiv.should.eql(expectedDiv);
+        });
+
+        it('should create an error message node when the models array is empty', function () {
+            var mockedModelArray = [];
+            sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
+
+            var errorMessage = "No API Models were found.  Did you generate the file?";
+            var errorDiv = '<div class="shape-content">' + errorMessage + '</div>';
+            sinon.stub(nodeBuilder, 'buildErrorMessageNode').returns(errorDiv);
+
+            app.buildNodes(doc);
+
+            var actualDiv = doc.getElementById('wrapper').innerHTML;
+            actualDiv.should.eql(errorDiv);
         });
     });
 });

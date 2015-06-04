@@ -9,8 +9,12 @@ var app = {
 
         var apiModels = models.getModels();
         var allNodesHtml = '';
-        for (i in apiModels) {
-            allNodesHtml += nodeBuilder.buildNodeFrom(apiModels[i]);
+        if (apiModels.length == 0) {
+            allNodesHtml = nodeBuilder.buildErrorMessageNode();
+        } else {
+            for (i in apiModels) {
+                allNodesHtml += nodeBuilder.buildNodeFrom(apiModels[i]);
+            }
         }
         wrapperDiv.innerHTML += allNodesHtml;
     }
