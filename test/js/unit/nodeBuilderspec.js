@@ -9,12 +9,21 @@ describe('nodeBuilder', function() {
         assert.equal(typeof nodeBuilder.buildNodeFrom, 'function');
     });
     
-    describe('#buildNode', function() {
+    describe('#buildNodeFrom', function() {
+
+        var apiModel = { name: 'foo', url: 'http://example.com', type: 'GET' };
+
         it('should create a div with the name of the apiModel', function() {
-            var apiModel = { name: 'foo', url: 'http://example.com', type: 'GET' };
-            var actualHTML = nodeBuilder.buildNodeFrom(apiModel)
+            var actualHTML = nodeBuilder.buildContentNode(apiModel.name)
             
             var expectedHTML = '<div class="shape-content">' + apiModel.name + '</div>';
+            actualHTML.should.eql(expectedHTML);
+        });
+
+        it('should create a div that can be styled with the \'shape\' class', function () {
+            var actualHTML = nodeBuilder.buildNodeFrom(apiModel);
+
+            var expectedHTML = '<div class="shape"><div class="shape-content">' + apiModel.name + '</div></div>';
             actualHTML.should.eql(expectedHTML);
         });
     });

@@ -1,7 +1,12 @@
 var nodeBuilder = {
 
-    buildNodeFrom : function(apiModel) { 
-        return '<div class="shape-content">' + apiModel.name + '</div>';
+    buildContentNode : function (apiModelName) { 
+        return '<div class="shape-content">' + apiModelName + '</div>';
+    },
+
+    buildNodeFrom : function (apiModel) {
+        var contentNode = this.buildContentNode(apiModel.name);
+        return '<div class="shape">' + contentNode + '</div>';
     }
     
 };
