@@ -6,11 +6,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-execute');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.registerTask('default', 'mochaTest');
     grunt.registerTask('run',
         'Run the tests, compile the API models, browserify the client-side code',
-        ['mochaTest', 'execute', 'browserify']);
+        ['mochaTest', 'execute', 'browserify', 'connect']);
 
     grunt.initConfig({
         mochaTest : {
@@ -35,6 +36,15 @@ module.exports = function(grunt) {
         execute : {
             target : {
                 src : ['src/pre/app.js']
+            }
+        },
+
+        connect : {
+            server : {
+                options: {
+                    port: 9000,
+                    keepalive: true
+                }
             }
         }
     });
