@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', 'mochaTest');
     grunt.registerTask('run',
         'Run the tests, compile the API models, browserify the client-side code',
-        ['mochaTest', 'execute', 'browserify', 'connect']);
+        ['execute', 'mochaTest', 'browserify', 'connect']);
 
     grunt.initConfig({
         mochaTest : {
