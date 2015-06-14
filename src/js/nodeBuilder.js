@@ -5,7 +5,7 @@ var nodeBuilder = {
 
     buildNodeFrom : function (apiModel) {
         var contentNode = this.buildContentNode(apiModel.name);
-        return '<div class="shape">' + contentNode + '</div>';
+        return '<div class="shape" id="' + apiModel.name + '">' + contentNode + '</div>';
     },
 
     buildErrorMessageNode : function () {
