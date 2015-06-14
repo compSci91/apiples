@@ -83,44 +83,8 @@ describe('app', function () {
                 var minutes = 1;
                 var actualScheduledRequests = app.buildScheduledRequests(minutes);
 
-                var expectedScheduledRequests = [];
-
                 actualScheduledRequests.length.should.eql(2);
                 assert(schedulerSpy.calledWithMatch('*/' + minutes + ' * * * *'));
-            });
-        });
-
-        describe('#updateNode', function () {
-
-            var modelName;
-            var stubbedDiv;
-            var doc;
-
-            beforeEach(function () {
-                modelName = 'foo';
-                stubbedDiv = "<div id='wrapper'></div>" +
-                    '<div class="shape" id="' + modelName + '"><div class="shape-content">foo</div></div>';
-                doc = jsdom(stubbedDiv);
-            });
-
-            context('ForFailure', function () {
-                it('should update the nodes classname to include \'failed\'', function () {
-                    app.updateNodeForFailure(doc, modelName);
-                    var actualDiv = doc.getElementById(modelName);
-
-                    var expectedClassName = 'shape failed';
-                    actualDiv.className.should.eql(expectedClassName);
-                });
-            });
-
-            context('ForSuccess', function () {
-                it('should update the nodes classname to include \'success\'', function () {
-                    app.updateNodeForSuccess(doc, modelName);
-                    var actualDiv = doc.getElementById(modelName);
-
-                    var expectedClassName = 'shape success';
-                    actualDiv.className.should.eql(expectedClassName);
-                });
             });
         });
     });

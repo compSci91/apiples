@@ -24,7 +24,6 @@ var app = {
         var apiRequests = [];
 
         var apiModels = models.getModels();
-        var allNodesHtml = '';
         var scheduledJob;
         for (i in apiModels) {
             scheduledJob = scheduler.scheduleJob('*/' + minutes + ' * * * *', function () {
@@ -33,14 +32,6 @@ var app = {
             apiRequests.push(scheduledJob);
         }
         return apiRequests;
-    },
-
-    updateNodeForFailure : function (doc, modelName) {
-        doc.getElementById(modelName).className += ' failed';
-    },
-
-    updateNodeForSuccess : function (doc, modelName) {
-        doc.getElementById(modelName).className += ' success';
     }
 };
 
