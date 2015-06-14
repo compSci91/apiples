@@ -33,6 +33,10 @@ var app = {
             apiRequests.push(scheduledJob);
         }
         return apiRequests;
+    },
+
+    updateNodeForFailure : function (doc, modelName) {
+        doc.getElementById(modelName).className += ' failed';
     }
 };
 

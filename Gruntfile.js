@@ -7,11 +7,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-execute');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     grunt.registerTask('default', 'mochaTest');
     grunt.registerTask('run',
         'Run the tests, compile the API models, browserify the client-side code',
-        ['execute', 'mochaTest', 'browserify', 'connect']);
+        ['execute', 'mochaTest', 'browserify', 'less', 'connect']);
 
     grunt.initConfig({
         mochaTest : {
@@ -44,6 +45,19 @@ module.exports = function(grunt) {
                 options: {
                     port: 9000,
                     keepalive: true
+                }
+            }
+        },
+
+        less: {
+            development: {
+                options: {
+                    compress: true,
+                    yuicompress: true,
+                    optimization: 2
+                },
+                files: {
+                    "styles/style.css": "styles/style.less"
                 }
             }
         }

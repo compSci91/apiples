@@ -69,7 +69,6 @@ describe('app', function () {
         });
 
         describe('#buildScheduledRequests', function () {
-
             it('should create a scheduled job for each api node', function () {
                 var scheduler = require('node-schedule');
                 var schedulerSpy = sinon.spy(scheduler, 'scheduleJob');
@@ -88,6 +87,22 @@ describe('app', function () {
 
                 actualScheduledRequests.length.should.eql(2);
                 assert(schedulerSpy.calledWithMatch('*/' + minutes + ' * * * *'));
+            });
+        });
+
+        describe('#updateNodeForFailure', function () {
+            it('should update the nodes classname to include \'failed\'', function () {
+
+                var modelName = 'foo';
+                var stubbedDiv = "<div id='wrapper'></div>" +
+                    '<div class="shape" id="' + modelName + '"><div class="shape-content">foo</div></div>';
+                var doc = jsdom(stubbedDiv);
+
+                app.updateNodeForFailure(doc, modelName);
+                var actualDiv = doc.getElementById(modelName);
+
+                var expectedClassName = 'shape failed';
+                actualDiv.className.should.eql(expectedClassName);
             });
         });
     });
