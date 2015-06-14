@@ -37,6 +37,10 @@ var app = {
 
     updateNodeForFailure : function (doc, modelName) {
         doc.getElementById(modelName).className += ' failed';
+    },
+
+    updateNodeForSuccess : function (doc, modelName) {
+        doc.getElementById(modelName).className += ' success';
     }
 };
 

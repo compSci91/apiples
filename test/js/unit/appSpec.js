@@ -90,19 +90,37 @@ describe('app', function () {
             });
         });
 
-        describe('#updateNodeForFailure', function () {
-            it('should update the nodes classname to include \'failed\'', function () {
+        describe('#updateNode', function () {
 
-                var modelName = 'foo';
-                var stubbedDiv = "<div id='wrapper'></div>" +
+            var modelName;
+            var stubbedDiv;
+            var doc;
+
+            beforeEach(function () {
+                modelName = 'foo';
+                stubbedDiv = "<div id='wrapper'></div>" +
                     '<div class="shape" id="' + modelName + '"><div class="shape-content">foo</div></div>';
-                var doc = jsdom(stubbedDiv);
+                doc = jsdom(stubbedDiv);
+            });
 
-                app.updateNodeForFailure(doc, modelName);
-                var actualDiv = doc.getElementById(modelName);
+            context('ForFailure', function () {
+                it('should update the nodes classname to include \'failed\'', function () {
+                    app.updateNodeForFailure(doc, modelName);
+                    var actualDiv = doc.getElementById(modelName);
 
-                var expectedClassName = 'shape failed';
-                actualDiv.className.should.eql(expectedClassName);
+                    var expectedClassName = 'shape failed';
+                    actualDiv.className.should.eql(expectedClassName);
+                });
+            });
+
+            context('ForSuccess', function () {
+                it('should update the nodes classname to include \'success\'', function () {
+                    app.updateNodeForSuccess(doc, modelName);
+                    var actualDiv = doc.getElementById(modelName);
+
+                    var expectedClassName = 'shape success';
+                    actualDiv.className.should.eql(expectedClassName);
+                });
             });
         });
     });
