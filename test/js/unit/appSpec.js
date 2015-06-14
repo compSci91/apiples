@@ -67,5 +67,28 @@ describe('app', function () {
             var actualDiv = doc.getElementById('wrapper').innerHTML;
             actualDiv.should.eql(errorDiv);
         });
+
+        describe('#buildScheduledRequests', function () {
+
+            it('should create a scheduled job for each api node', function () {
+                var scheduler = require('node-schedule');
+                var schedulerSpy = sinon.spy(scheduler, 'scheduleJob');
+
+                var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
+                var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
+                var mockedModelArray = [mockedFooJSON, mockedSpargonautJSON];
+
+                var apiModels = require('../../../src/js/models.js');
+                sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
+
+                var minutes = 1;
+                var actualScheduledRequests = app.buildScheduledRequests(minutes);
+
+                var expectedScheduledRequests = [];
+
+                actualScheduledRequests.length.should.eql(2);
+                assert(schedulerSpy.calledWithMatch('*/' + minutes + ' * * * *'));
+            });
+        });
     });
 });
