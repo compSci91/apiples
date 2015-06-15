@@ -70,7 +70,7 @@ describe('app', function () {
             actualDiv.should.eql(errorDiv);
         });
 
-        describe('#buildScheduledRequests', function () {
+        describe('#startScheduledRequests', function () {
             it('should create a scheduled job for each api node', function () {
                 var schedulerSpy = sinon.spy(scheduler, 'scheduleJob');
 
@@ -82,7 +82,7 @@ describe('app', function () {
                 sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
 
                 var minutes = 1;
-                var actualScheduledRequests = app.buildScheduledRequests(minutes, doc);
+                var actualScheduledRequests = app.startScheduledRequests(minutes, doc);
 
                 actualScheduledRequests.length.should.eql(2);
                 assert(schedulerSpy.calledWithMatch('*/' + minutes + ' * * * *'));
@@ -103,9 +103,23 @@ describe('app', function () {
                 var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest').returns(callbackStub);
 
                 var minutes = 1;
-                var actualScheduledRequests = app.buildScheduledRequests(minutes, doc);
+                var actualScheduledRequests = app.startScheduledRequests(minutes, doc);
                 // this assertion could be better
                 assert.equal(typeof scheduler.scheduleJob.getCall(0).args[1], 'function');
+            });
+        });
+
+        describe('#stopScheduledRequests', function () {
+            it('should do something', function () {
+                var schedulerSpy = sinon.spy(scheduler, 'cancelJob');
+
+                var scheduledJobOne = {};
+                var scheduledJobTwo = {};
+                var requests = [scheduledJobOne, scheduledJobTwo];
+
+                app.stopScheduledRequests(requests);
+                assert(schedulerSpy.calledTwice);
+
             });
         });
     });

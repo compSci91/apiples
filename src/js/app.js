@@ -22,7 +22,8 @@ var app = {
         wrapperDiv.innerHTML += allNodesHtml;
     },
 
-    buildScheduledRequests : function (minutes, doc) {
+    startScheduledRequests : function (minutes, doc) {
+        console.log('starting the scheduled requests');
         var apiRequests = [];
 
         var apiModels = models.getModels();
@@ -37,6 +38,13 @@ var app = {
             apiRequests.push(scheduledJob);
         }
         return apiRequests;
+    },
+
+    stopScheduledRequests : function (requests) {
+        console.log('stopping the scheduled requests!');
+        for (i in requests) {
+            scheduler.cancelJob(requests[i]);
+        }
     }
 };
 
