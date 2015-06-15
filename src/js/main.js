@@ -1,11 +1,15 @@
 var app = require('./app.js');
 
 var callFrequencyMinutes = 1;
+var scheduledRequests;
 
 console.log('starting up');
 app.buildNodes(document);
 
-startTimedAction = function () {
-    console.log('starting the timed actions');
-    app.buildScheduledRequests(callFrequencyMinutes, document);
+startScheduledRequest = function () {
+    scheduledRequests = app.startScheduledRequests(callFrequencyMinutes, document);
+};
+
+stopScheduledRequest = function () {
+    app.stopScheduledRequests(scheduledRequests);
 };
