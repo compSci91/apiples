@@ -10,10 +10,12 @@ describe('app', function () {
 
     var nodeBuilder = require('../../../src/js/nodeBuilder.js');
     var apiModels = require('../../../src/js/models.js');
+    var scheduler = require('node-schedule');
 
     afterEach(function () {
         sinon.restore(nodeBuilder);
         sinon.restore(apiModels);
+        sinon.restore(scheduler);
     });
 
     describe('#buildNodes', function () {
@@ -70,7 +72,6 @@ describe('app', function () {
 
         describe('#buildScheduledRequests', function () {
             it('should create a scheduled job for each api node', function () {
-                var scheduler = require('node-schedule');
                 var schedulerSpy = sinon.spy(scheduler, 'scheduleJob');
 
                 var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
@@ -81,10 +82,30 @@ describe('app', function () {
                 sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
 
                 var minutes = 1;
-                var actualScheduledRequests = app.buildScheduledRequests(minutes);
+                var actualScheduledRequests = app.buildScheduledRequests(minutes, doc);
 
                 actualScheduledRequests.length.should.eql(2);
                 assert(schedulerSpy.calledWithMatch('*/' + minutes + ' * * * *'));
+            });
+
+            it('should create a scheduled job with a request from the requestBuilder', function () {
+                var schedulerSpy = sinon.spy(scheduler, 'scheduleJob');
+
+                var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
+                var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
+                var mockedModelArray = [mockedFooJSON, mockedSpargonautJSON];
+
+                var apiModels = require('../../../src/js/models.js');
+                sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
+
+                var callbackStub = sinon.stub();
+                var requestBuilder = require('../../../src/js/requestBuilder.js');
+                var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest').returns(callbackStub);
+
+                var minutes = 1;
+                var actualScheduledRequests = app.buildScheduledRequests(minutes, doc);
+                // this assertion could be better
+                assert.equal(typeof scheduler.scheduleJob.getCall(0).args[1], 'function');
             });
         });
     });

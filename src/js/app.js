@@ -2,6 +2,8 @@ var nodeBuilder = require('./nodeBuilder.js');
 var models = require('./models.js');
 var scheduler = require('node-schedule');
 
+var requestBuilder = require('./requestBuilder');
+
 var app = {
 
     buildNodes : function (doc) {
@@ -20,15 +22,18 @@ var app = {
         wrapperDiv.innerHTML += allNodesHtml;
     },
 
-    buildScheduledRequests : function (minutes) {
+    buildScheduledRequests : function (minutes, doc) {
         var apiRequests = [];
 
         var apiModels = models.getModels();
+
+        var node;
+
         var scheduledJob;
         for (i in apiModels) {
-            scheduledJob = scheduler.scheduleJob('*/' + minutes + ' * * * *', function () {
-                console.log('making the apiRequests');
-            });
+            node = doc.getElementById(apiModels[i].name);
+            scheduledJob = scheduler.scheduleJob('*/' + minutes + ' * * * *',
+                requestBuilder.makeRequest(apiModels[i], node));
             apiRequests.push(scheduledJob);
         }
         return apiRequests;
