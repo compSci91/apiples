@@ -4,7 +4,7 @@ var assert = require('assert');
 
 var apiParser = require('../../../src/pre/apiParser.js');
 
-describe('apiParser', function() {
+describe('apiParser', function () {
 
     var fs = require('fs');
 
@@ -23,8 +23,8 @@ describe('apiParser', function() {
         sinon.restore(fs);
     });
 
-    describe('#getApiRequestJSONFiles', function() {
-        it('should ignore filenames that start with a dot', function() {
+    describe('#getApiRequestJSONFiles', function () {
+        it('should ignore filenames that start with a dot', function () {
             sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
 
             var actualApiRequestArray = apiParser.getApiRequestJSONFiles();
@@ -35,8 +35,8 @@ describe('apiParser', function() {
         });        
     });
 
-    describe('#getApiRequest', function() {
-        it('should create an apiRequest object from an apiRequest.JSON file', function() {
+    describe('#getApiRequest', function () {
+        it('should create an apiRequest object from an apiRequest.JSON file', function () {
             sinon.stub(fs, 'readFileSync').returns(mockedSpargonautFile);
 
             var actualApiJSON = apiParser.getApiRequest(spargonautFileName);
@@ -47,8 +47,8 @@ describe('apiParser', function() {
         });
     });
 
-    describe('#getApiModels', function() {
-        it('should create an array of apiRequest Objects from the json files in the api directory', function() {
+    describe('#getApiModels', function () {
+        it('should create an array of apiRequest Objects from the json files in the api directory', function () {
             sinon.stub(fs, 'readFileSync')
                 .onFirstCall().returns(mockedFooFile)
                 .onSecondCall().returns(mockedSpargonautFile);
@@ -62,10 +62,18 @@ describe('apiParser', function() {
             var actualArray = apiParser.getApiModels();
             actualArray.should.eql(expectedArray);
         });
+
+        it('should validate the API models', function () {
+            var apiModelValidator = require('../../../src/pre/apiModelValidator.js');
+            var validatorStub = sinon.stub(apiModelValidator, 'areValidModels');
+
+            apiParser.getApiModels();
+            assert(validatorStub.called);
+        });
     });
 
-    describe('#createApiModelsFile', function() {
-        it('should create the models file with an api model', function() {
+    describe('#createApiModelsFile', function () {
+        it('should create the models file with an api model', function () {
             sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
 
             var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";

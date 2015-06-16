@@ -1,6 +1,7 @@
 var fs = require('fs');
 var _ = require('lodash');
 
+var apiModelValidator = require('./apiModelValidator.js');
 var apiRequestJSONLocation = 'apis';
 
 var apiParser = {
@@ -24,11 +25,13 @@ var apiParser = {
         var apiRequestJSONFiles = this.getApiRequestJSONFiles();
         var apiModel;
         var apiModels = [];
-        var filename;
         for (i in apiRequestJSONFiles) {
             apiModel = this.getApiRequest(apiRequestJSONFiles[i]);
             apiModels.push(apiModel);
         };
+
+        apiModelValidator.areValidModels(apiModels);
+
         return apiModels;
     },
 
