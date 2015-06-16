@@ -9,11 +9,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerTask('default', 'mochaTest');
     grunt.registerTask('run',
         'Run the tests, compile the API models, browserify the client-side code',
-        ['execute', 'mochaTest', 'copy', 'browserify', 'less', 'connect']);
+        ['clean', 'execute', 'mochaTest', 'copy', 'browserify', 'less', 'connect']);
 
     grunt.initConfig({
         mochaTest : {
@@ -74,6 +75,8 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        }
+        },
+
+        clean: ['dist']
     });
 };
