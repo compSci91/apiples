@@ -9,3 +9,4 @@ apis/*
 models.js
 style.css
 bundle.js
+dist/*
