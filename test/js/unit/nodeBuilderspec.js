@@ -16,14 +16,14 @@ describe('nodeBuilder', function() {
         it('should create a div with the name of the apiModel', function() {
             var actualHTML = nodeBuilder.buildContentNode(apiModel.name)
             
-            var expectedHTML = '<div class="shape-content">' + apiModel.name + '</div>';
+            var expectedHTML = "<div class='shape-content'>" + apiModel.name + "</div>";
             actualHTML.should.eql(expectedHTML);
         });
 
         it('should create a div that can be styled with the \'shape\' class', function () {
             var actualHTML = nodeBuilder.buildNodeFrom(apiModel);
 
-            var expectedHTML = '<div class="shape" id="' + apiModel.name + '"><div class="shape-content">' + apiModel.name + '</div></div>';
+            var expectedHTML = "<div class='shape' id='" + apiModel.name + "'><div class='shape-content'>" + apiModel.name + "</div></div>";
             actualHTML.should.eql(expectedHTML);
         });
 
@@ -31,7 +31,7 @@ describe('nodeBuilder', function() {
         it('should assign the api a unique id', function () {
             var actualHTML = nodeBuilder.buildNodeFrom(apiModel);
 
-            var expectedHTML = '<div class="shape" id="' + apiModel.name + '"><div class="shape-content">' + apiModel.name + '</div></div>';
+            var expectedHTML = "<div class='shape' id='" + apiModel.name + "'><div class='shape-content'>" + apiModel.name + "</div></div>";
             actualHTML.should.eql(expectedHTML);
         });
     });
@@ -42,7 +42,7 @@ describe('nodeBuilder', function() {
 
             var actualHTML = nodeBuilder.buildErrorMessageNode();
 
-            var expectedHTML = '<div class="shape-content">' + errorMessage + '</div>';
+            var expectedHTML = "<div class='shape-content'><div class='error'>" + errorMessage + "</div></div>";
             actualHTML.should.eql(expectedHTML);
         });
     });

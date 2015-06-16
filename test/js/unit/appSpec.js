@@ -22,7 +22,7 @@ describe('app', function () {
         var stubbedDiv;
         var doc;
         beforeEach(function () {
-            stubbedDiv = "<div id='wrapper'></div>";
+            stubbedDiv = "<div id='wrapper'><button type='button'>one</button><button type='button'>two</button></div>";
             doc = jsdom(stubbedDiv);
         });
 
@@ -32,9 +32,6 @@ describe('app', function () {
         });
 
         it('should add a node to the wrapper element for every api model found by the apiParser', function () {
-            var stubbedDiv = "<div id='wrapper'></div>";
-            var doc = jsdom(stubbedDiv);
-
             var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
             var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
             var mockedModelArray = [mockedFooJSON, mockedSpargonautJSON];
@@ -51,23 +48,24 @@ describe('app', function () {
 
             app.buildNodes(doc);
             var actualDiv = doc.getElementById('wrapper').innerHTML;
-            var expectedDiv = '<div class="shape-content">foo</div><div class="shape-content">spargonaut</div>';
+            var expectedDiv = '<button type="button">one</button><button type="button">two</button><div class="shape-content">foo</div><div class="shape-content">spargonaut</div>';
 
             actualDiv.should.eql(expectedDiv);
         });
 
-        it('should create an error message node when the models array is empty', function () {
+        it('should replace the contents in the wrapper div with an error message when the models array is empty', function () {
             var mockedModelArray = [];
             sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
 
             var errorMessage = "No API Models were found.  Did you generate the file?";
-            var errorDiv = '<div class="shape-content">' + errorMessage + '</div>';
+            var errorDiv = "<div class='shape-content'>" + errorMessage + "</div>";
             sinon.stub(nodeBuilder, 'buildErrorMessageNode').returns(errorDiv);
 
             app.buildNodes(doc);
 
             var actualDiv = doc.getElementById('wrapper').innerHTML;
-            actualDiv.should.eql(errorDiv);
+            var expectedContent = '<div class="shape-content">No API Models were found.  Did you generate the file?</div>';
+            actualDiv.should.eql(expectedContent);
         });
 
         describe('#startScheduledRequests', function () {

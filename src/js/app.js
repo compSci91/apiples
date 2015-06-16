@@ -8,8 +8,8 @@ var app = {
 
     buildNodes : function (doc) {
 
-        var wrapperDiv = doc.getElementById('wrapper');
-        var allNodesHtml = '';
+        var wrapperElement = doc.getElementById('wrapper');
+        var allNodesHtml = wrapperElement.innerHTML;
 
         var apiModels = models.getModels();
         if (apiModels.length == 0) {
@@ -19,7 +19,7 @@ var app = {
                 allNodesHtml += nodeBuilder.buildNodeFrom(apiModels[i]);
             }
         }
-        wrapperDiv.innerHTML += allNodesHtml;
+        wrapperElement.innerHTML = allNodesHtml;
     },
 
     startScheduledRequests : function (minutes, doc) {
