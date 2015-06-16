@@ -8,18 +8,18 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-execute');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('default', 'mochaTest');
     grunt.registerTask('run',
         'Run the tests, compile the API models, browserify the client-side code',
-        ['execute', 'mochaTest', 'browserify', 'less', 'connect']);
+        ['execute', 'mochaTest', 'copy', 'browserify', 'less', 'connect']);
 
     grunt.initConfig({
         mochaTest : {
             test : {
                 options : {
                     reporter : 'spec',
-                    captureFile : 'results.txt',
                     quiet : false,
                     clearRequireCache : false
                 },
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         browserify : {
             main : {
                 src : 'src/js/*.js',
-                dest : './bundle.js'
+                dest : 'dist/js/bundle.js'
             }
         },
 
@@ -44,7 +44,8 @@ module.exports = function(grunt) {
             server : {
                 options: {
                     port: 9000,
-                    keepalive: true
+                    keepalive: true,
+                    base: 'dist'
                 }
             }
         },
@@ -57,8 +58,21 @@ module.exports = function(grunt) {
                     optimization: 2
                 },
                 files: {
-                    "styles/style.css": "styles/style.less"
+                    "dist/styles/style.css": "src/styles/style.less"
                 }
+            }
+        },
+
+        copy: {
+            main: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/',
+                        src: ['index.html'],
+                        dest: 'dist/'
+                    }
+                ]
             }
         }
     });
