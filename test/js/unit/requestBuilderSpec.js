@@ -54,11 +54,28 @@ describe('RequestBuilder', function () {
     });
 
     describe('#createAjaxBody', function () {
-        var actualRequestBody = requestBuilder.createAjaxBody(apiModel);
+        var some_sample_data = {
+            foo: 'bar',
+            biz: 'baz'
+        };
+
+        var sampleApiModel = {
+            url: 'http://www.example.com',
+            type: 'POST',
+            data: JSON.stringify(some_sample_data),
+            contentType: 'some_content_type',
+            dataType: 'json'
+        };
+
+        var actualRequestBody = requestBuilder.createAjaxBody(sampleApiModel);
 
         var expectedAjaxBody = {
             url: 'http://www.example.com',
-            type: 'GET'
+            type: 'POST',
+            data: JSON.stringify(some_sample_data),
+            contentType: 'some_content_type',
+            dataType: 'json'
+
         };
         actualRequestBody.should.eql(expectedAjaxBody);
     });
@@ -71,10 +88,6 @@ describe('RequestBuilder', function () {
 
         describe('the jquery callback', function () {
             xit('should make the call with the ajax body', function () {
-                var ajaxBody = {
-                    url: 'http://www.example.com',
-                    type: 'GET'
-                };
                 var jsdom = require('jsdom');
                 var jquery = require('jquery')(jsdom.jsdom().defaultView);
 

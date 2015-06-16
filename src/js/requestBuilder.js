@@ -31,7 +31,10 @@ var requestBuilder = {
     createAjaxBody : function (apiModel) {
         return {
             url: apiModel.url,
-            type: apiModel.type
+            type: apiModel.type,
+            data: apiModel.data,
+            contentType: apiModel.contentType,
+            dataType: apiModel.dataType
         };
     }
 };
