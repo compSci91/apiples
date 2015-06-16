@@ -29,13 +29,15 @@ var requestBuilder = {
     },
 
     createAjaxBody : function (apiModel) {
-        return {
+        var ajaxBody = {
             url: apiModel.url,
             type: apiModel.type,
-            data: apiModel.data,
+            data: JSON.stringify(apiModel.data),
             contentType: apiModel.contentType,
-            dataType: apiModel.dataType
+            dataType: apiModel.dataType,
+            timeout: apiModel.timeout
         };
+        return ajaxBody;
     }
 };
 module.exports = requestBuilder;
