@@ -1,0 +1,5 @@
+{
+    "name" :"foo",
+    "url" : "http://spargonaut.com/foo.txt",
+    "type" : "GET"
+}
