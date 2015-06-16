@@ -9,7 +9,7 @@ var nodeBuilder = {
     },
 
     buildErrorMessageNode : function () {
-        var errorMessage = 'No API Models were found.  Did you generate the file?';
+        var errorMessage = "No API Models were found.<br>Did you generate the file?<br>Do you have any api models in the 'apis' directory?";
         return this.buildContentNode(errorMessage);
     }
 };
