@@ -5,8 +5,6 @@ var apiRequestJSONLocation = 'apis';
 
 var apiParser = {
     
-    parseApiFiles : function() {},
-
     getApiRequestJSONFiles : function() {
         var fileNames = fs.readdirSync(apiRequestJSONLocation);
         var filteredFiles = _.filter(fileNames, function(item) {
