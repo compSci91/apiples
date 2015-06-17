@@ -32,12 +32,16 @@ var requestBuilder = {
         var ajaxBody = {
             url: apiModel.url,
             type: apiModel.type,
-            data: JSON.stringify(apiModel.data),
+            data: this.formatData(apiModel),
             contentType: apiModel.contentType,
             dataType: apiModel.dataType,
             timeout: apiModel.timeout
         };
         return ajaxBody;
+    },
+
+    formatData : function (apiModel) {
+        return (apiModel.type === "GET") ? apiModel.data : JSON.stringify(apiModel.data);
     }
 };
 module.exports = requestBuilder;
