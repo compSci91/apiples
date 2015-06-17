@@ -50,7 +50,7 @@ describe('RequestBuilder', function () {
                 var expectedClassName = 'shape success';
                 node.className.should.eql(expectedClassName);
             });
-        })
+        });
     });
 
     describe('#createAjaxBody', function () {
@@ -60,7 +60,7 @@ describe('RequestBuilder', function () {
         };
 
         context('when type is POST', function () {
-            it('should map the apiModel data to an ajax body', function () {
+            it('should map the apiModel data to an ajax body as strings', function () {
                 var sampleApiModel = {
                     url: 'http://www.example.com',
                     type: 'POST',
@@ -85,30 +85,29 @@ describe('RequestBuilder', function () {
         });
 
         context('when type is GET', function () {
-           it('should map the apiModel data to an ajax body', function () {
-               var sampleApiModel = {
-                   url: 'http://www.example.com',
-                   type: 'GET',
-                   data: some_sample_data,
-                   contentType: 'some_content_type',
-                   dataType: 'json',
-                   timeout: 6000
-               };
+            it('should map the apiModel data to an ajax body', function () {
+                var sampleApiModel = {
+                    url: 'http://www.example.com',
+                    type: 'GET',
+                    data: some_sample_data,
+                    contentType: 'some_content_type',
+                    dataType: 'json',
+                    timeout: 6000
+                };
 
-               var actualRequestBody = requestBuilder.createAjaxBody(sampleApiModel);
+                var actualRequestBody = requestBuilder.createAjaxBody(sampleApiModel);
 
-               var expectedAjaxBody = {
-                   url: 'http://www.example.com',
-                   type: 'GET',
-                   data: some_sample_data,
-                   contentType: 'some_content_type',
-                   dataType: 'json',
-                   timeout: 6000
-               };
-               actualRequestBody.should.eql(expectedAjaxBody);
-           }) ;
+                var expectedAjaxBody = {
+                    url: 'http://www.example.com',
+                    type: 'GET',
+                    data: some_sample_data,
+                    contentType: 'some_content_type',
+                    dataType: 'json',
+                    timeout: 6000
+                };
+                actualRequestBody.should.eql(expectedAjaxBody);
+            });
         });
-
     });
 
     describe('#makeRequest', function () {

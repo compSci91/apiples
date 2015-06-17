@@ -1,4 +1,5 @@
 var jquery = require('jquery');
+var dynamicContent = require('./dynamicContent.js');
 
 var requestBuilder = {
 
@@ -41,6 +42,7 @@ var requestBuilder = {
     },
 
     formatData : function (apiModel) {
+        apiModel.data = dynamicContent.generateDynamicDates(apiModel.data);
         return (apiModel.type === "GET") ? apiModel.data : JSON.stringify(apiModel.data);
     }
 };
