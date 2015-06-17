@@ -22,6 +22,7 @@
     "jsonparse": "^1.0.0",
     "lodash": "^3.9.3",
     "mocha": "^2.2.5",
+    "moment": "^2.10.3",
     "node-schedule": "^0.2.9",
     "should": "^6.0.3",
     "sinon": "^1.14.1"
