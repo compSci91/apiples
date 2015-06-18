@@ -52,7 +52,23 @@ That file needs to be in a json structure, and it understands the following form
         "data" : "the data you're wanting to send, like, for a POST",
         "dataType" : "kinda self explanatory"
     }
-The values (i.e. values on the right of the semicolon) are optional (except 'name'), the values on the left are not.
+The values (i.e. values on the right of the semicolon) are semi-optional (except 'name' and 'url'), the values on the left are not.
+Most of these values map directly to a jquery.ajax body; feel free to browse that documentation for more information.
+ 
+#### Dynamic Dates
+Apiples has the ability to generate dynamic dates for key/value pairs in your 'data' block.  For example, lets say today's date is June 18th of 2015.
+In the API call, you need information for a date in the future, so you hardcode that date in your apiModel file.
+Unfortunately, once that date has passed, you now have to update your apiModel file.
+With Apiples, you can get around this by using the 'DYNAMIC-\#' as the value to whatever key you need to set a date for, where the hash sign is replaced by the number of days in the future you want to be used.
+
+For example, if you put this as the value block to your 'data' key:
+
+    {
+        "request-date" : "DYNAMIC-2"
+    }
+
+The date generated for the request call would use a date two days in the future in the format of 'YYYY-MM-DD'
+
 
 
 
