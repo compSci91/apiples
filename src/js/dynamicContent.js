@@ -6,7 +6,7 @@ var dynamicContent = {
             if (dataModel.hasOwnProperty(key)) {
                 if (this.isDynamicDate(dataModel, key)) {
                     var daysIntoFuture = dataModel[key].substring(8);
-                    dataModel[key] = moment().add(Number(daysIntoFuture), "days").format("YYYY-MM-DD")
+                    dataModel[key] = moment().add(Number(daysIntoFuture), "days").format("YYYY-MM-DD");
                 }
             }
         }

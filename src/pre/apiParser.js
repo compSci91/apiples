@@ -12,7 +12,7 @@ var apiParser = {
             var re = new RegExp(/^\./);
             return !re.test(item);
         });
-        return filteredFiles
+        return filteredFiles;
     },
 
     getApiRequest : function(filename) {
@@ -25,10 +25,10 @@ var apiParser = {
         var apiRequestJSONFiles = this.getApiRequestJSONFiles();
         var apiModel;
         var apiModels = [];
-        for (i in apiRequestJSONFiles) {
+        for (var i in apiRequestJSONFiles) {
             apiModel = this.getApiRequest(apiRequestJSONFiles[i]);
             apiModels.push(apiModel);
-        };
+        }
 
         apiModelValidator.areValidModels(apiModels);
 
@@ -38,12 +38,12 @@ var apiParser = {
     createApiModelsFile : function() {
         var apiModels = this.getApiModels();
         var stringToWrite = '';
-        for (index in apiModels) {
-            stringToWrite += JSON.stringify(apiModels[index]) + ", ";
+        for (var i in apiModels) {
+            stringToWrite += JSON.stringify(apiModels[i]) + ", ";
         }
         stringToWrite = stringToWrite.substring(0, (stringToWrite.length - 2));
         var fileHeader = "module.exports = { getModels : function () { return [ ";
-        var fileFooter = ' ]}}';
+        var fileFooter = ' ];}}';
         return fileHeader + stringToWrite + fileFooter;
     }
 };

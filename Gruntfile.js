@@ -77,6 +77,12 @@ module.exports = function(grunt) {
             }
         },
 
-        clean: ['dist']
+        clean: ['dist'],
+
+        jshint: {
+            files: {
+                src: ['src/js/**/*.js', 'src/pre/**/*.js', 'test/**/*.js']
+            }
+        }
     });
 };

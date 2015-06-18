@@ -19,14 +19,14 @@ var requestBuilder = {
         return function (xhr, msg) {
             node.className = 'shape failed';
             console.log('api request failed');
-        }
+        };
     },
 
     createCallbackForSuccess : function (node) {
         return function (xhr, msg) {
             node.className = 'shape success';
             console.log('api request done');
-        }
+        };
     },
 
     createAjaxBody : function (apiModel) {

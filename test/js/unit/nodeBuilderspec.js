@@ -14,7 +14,7 @@ describe('nodeBuilder', function() {
         var apiModel = { name: 'foo', url: 'http://example.com', type: 'GET' };
 
         it('should create a div with the name of the apiModel', function() {
-            var actualHTML = nodeBuilder.buildContentNode(apiModel.name)
+            var actualHTML = nodeBuilder.buildContentNode(apiModel.name);
             
             var expectedHTML = "<div class='shape-content'>" + apiModel.name + "</div>";
             actualHTML.should.eql(expectedHTML);

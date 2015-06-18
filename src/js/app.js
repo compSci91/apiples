@@ -12,10 +12,10 @@ var app = {
         var allNodesHtml = wrapperElement.innerHTML;
 
         var apiModels = models.getModels();
-        if (apiModels.length == 0) {
+        if (apiModels.length === 0) {
             allNodesHtml = nodeBuilder.buildErrorMessageNode();
         } else {
-            for (i in apiModels) {
+            for (var i in apiModels) {
                 allNodesHtml += nodeBuilder.buildNodeFrom(apiModels[i]);
             }
         }
@@ -31,7 +31,7 @@ var app = {
         var node;
 
         var scheduledJob;
-        for (i in apiModels) {
+        for (var i in apiModels) {
             node = doc.getElementById(apiModels[i].name);
             scheduledJob = scheduler.scheduleJob('*/' + minutes + ' * * * *',
                 requestBuilder.makeRequest(apiModels[i], node));
@@ -42,7 +42,7 @@ var app = {
 
     stopScheduledRequests : function (requests) {
         console.log('stopping the scheduled requests!');
-        for (i in requests) {
+        for (var i in requests) {
             scheduler.cancelJob(requests[i]);
         }
     }
