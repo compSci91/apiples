@@ -2,7 +2,7 @@ var nodeBuilder = require('./nodeBuilder.js');
 var models = require('./models.js');
 var scheduler = require('node-schedule');
 
-var requestBuilder = require('./requestBuilder');
+var requestScheduler = require('./requestScheduler.js');
 
 var app = {
 
@@ -24,20 +24,15 @@ var app = {
         wrapperElement.innerHTML = allNodesHtml;
     },
 
-    startScheduledRequests : function (minutes, doc) {
+    startScheduledRequests : function (doc) {
         console.log('starting the scheduled requests');
         var apiRequests = [];
-
         var apiModels = models.getModels();
 
-        var node;
-
-        var scheduledJob;
         for (var i in apiModels) {
             if (apiModels.hasOwnProperty(i)) {
-                node = doc.getElementById(apiModels[i].name);
-                scheduledJob = scheduler.scheduleJob('*/' + minutes + ' * * * *',
-                    requestBuilder.makeRequest(apiModels[i], node));
+                var node = doc.getElementById(apiModels[i].name);
+                var scheduledJob = requestScheduler.createScheduledJob(apiModels[i], node);
                 apiRequests.push(scheduledJob);
             }
         }

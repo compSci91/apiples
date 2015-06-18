@@ -72,7 +72,8 @@ describe('app', function () {
 
     describe('.startScheduledRequests()', function () {
         it('should create a scheduled job for each api node', function () {
-            var schedulerSpy = sinon.spy(scheduler, 'scheduleJob');
+            var requestScheduler = require('../../../src/js/requestScheduler.js');
+            var requestSchedulerSpy = sinon.spy(requestScheduler, 'createScheduledJob');
 
             var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
             var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
@@ -81,11 +82,13 @@ describe('app', function () {
             var apiModels = require('../../../src/js/models.js');
             sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
 
-            var minutes = 1;
-            var actualScheduledRequests = app.startScheduledRequests(minutes, doc);
+            var fooNode = doc.getElementById(mockedFooJSON.name);
+            var spargonautNode = doc.getElementById(mockedSpargonautJSON.name);
+            var actualScheduledRequests = app.startScheduledRequests(doc);
 
             actualScheduledRequests.length.should.eql(2);
-            assert(schedulerSpy.calledWithMatch('*/' + minutes + ' * * * *'));
+            assert(requestSchedulerSpy.calledWithMatch(mockedFooJSON, fooNode));
+            assert(requestSchedulerSpy.calledWithMatch(mockedSpargonautJSON, spargonautNode));
         });
 
         it('should create a scheduled job with a request from the requestBuilder', function () {
@@ -102,8 +105,7 @@ describe('app', function () {
             var requestBuilder = require('../../../src/js/requestBuilder.js');
             var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest').returns(callbackStub);
 
-            var minutes = 1;
-            app.startScheduledRequests(minutes, doc);
+            app.startScheduledRequests(doc);
             // this assertion could be better
             assert.equal(typeof scheduler.scheduleJob.getCall(0).args[1], 'function');
 

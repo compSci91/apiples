@@ -1,5 +1,6 @@
 {
     "name" :"foo",
     "url" : "http://spargonaut.com/foo.txt",
-    "type" : "GET"
+    "type" : "GET",
+    "schedule": "*/1 * * * *"
 }
