@@ -23,6 +23,12 @@ var requestScheduler = {
                 scheduledJobs.push(job);
             }
         }
+    },
+
+    stopScheduledRequests : function () {
+        for(var i in scheduledJobs) {
+            scheduler.cancelJob(scheduledJobs[i]);
+        }
     }
 };
 

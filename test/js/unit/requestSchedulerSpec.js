@@ -80,4 +80,13 @@ describe('RequestScheduler', function () {
             requestSchedulerSpy.restore();
         });
     });
+
+    describe('.stopScheduledRequests()', function () {
+        it('should cancel the scheduled jobs', function () {
+            var schedulerSpy = sinon.spy(scheduler, 'cancelJob');
+            requestScheduler.stopScheduledRequests();
+            assert(schedulerSpy.calledTwice);
+        });
+
+    });
 });
