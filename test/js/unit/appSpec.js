@@ -104,6 +104,8 @@ describe('app', function () {
                 var actualScheduledRequests = app.startScheduledRequests(minutes, doc);
                 // this assertion could be better
                 assert.equal(typeof scheduler.scheduleJob.getCall(0).args[1], 'function');
+
+                requestBuilderStub.restore();
             });
         });
 
