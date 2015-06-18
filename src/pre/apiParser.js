@@ -8,11 +8,10 @@ var apiParser = {
     
     getApiRequestJSONFiles : function() {
         var fileNames = fs.readdirSync(apiRequestJSONLocation);
-        var filteredFiles = _.filter(fileNames, function(item) {
+        return _.filter(fileNames, function(item) {
             var re = new RegExp(/^\./);
             return !re.test(item);
         });
-        return filteredFiles;
     },
 
     getApiRequest : function(filename) {
@@ -26,8 +25,10 @@ var apiParser = {
         var apiModel;
         var apiModels = [];
         for (var i in apiRequestJSONFiles) {
-            apiModel = this.getApiRequest(apiRequestJSONFiles[i]);
-            apiModels.push(apiModel);
+            if (apiRequestJSONFiles.hasOwnProperty(i)) {
+                apiModel = this.getApiRequest(apiRequestJSONFiles[i]);
+                apiModels.push(apiModel);
+            }
         }
 
         apiModelValidator.areValidModels(apiModels);
@@ -39,7 +40,9 @@ var apiParser = {
         var apiModels = this.getApiModels();
         var stringToWrite = '';
         for (var i in apiModels) {
-            stringToWrite += JSON.stringify(apiModels[i]) + ", ";
+            if (apiModels.hasOwnProperty(i)) {
+                stringToWrite += JSON.stringify(apiModels[i]) + ", ";
+            }
         }
         stringToWrite = stringToWrite.substring(0, (stringToWrite.length - 2));
         var fileHeader = "module.exports = { getModels : function () { return [ ";

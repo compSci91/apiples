@@ -30,7 +30,7 @@ var requestBuilder = {
     },
 
     createAjaxBody : function (apiModel) {
-        var ajaxBody = {
+        return {
             url: apiModel.url,
             type: apiModel.type,
             data: this.formatData(apiModel),
@@ -38,7 +38,6 @@ var requestBuilder = {
             dataType: apiModel.dataType,
             timeout: apiModel.timeout
         };
-        return ajaxBody;
     },
 
     formatData : function (apiModel) {

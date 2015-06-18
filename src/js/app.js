@@ -16,7 +16,9 @@ var app = {
             allNodesHtml = nodeBuilder.buildErrorMessageNode();
         } else {
             for (var i in apiModels) {
-                allNodesHtml += nodeBuilder.buildNodeFrom(apiModels[i]);
+                if (apiModels.hasOwnProperty(i)) {
+                    allNodesHtml += nodeBuilder.buildNodeFrom(apiModels[i]);
+                }
             }
         }
         wrapperElement.innerHTML = allNodesHtml;
@@ -32,10 +34,12 @@ var app = {
 
         var scheduledJob;
         for (var i in apiModels) {
-            node = doc.getElementById(apiModels[i].name);
-            scheduledJob = scheduler.scheduleJob('*/' + minutes + ' * * * *',
-                requestBuilder.makeRequest(apiModels[i], node));
-            apiRequests.push(scheduledJob);
+            if (apiModels.hasOwnProperty(i)) {
+                node = doc.getElementById(apiModels[i].name);
+                scheduledJob = scheduler.scheduleJob('*/' + minutes + ' * * * *',
+                    requestBuilder.makeRequest(apiModels[i], node));
+                apiRequests.push(scheduledJob);
+            }
         }
         return apiRequests;
     },
@@ -43,7 +47,9 @@ var app = {
     stopScheduledRequests : function (requests) {
         console.log('stopping the scheduled requests!');
         for (var i in requests) {
-            scheduler.cancelJob(requests[i]);
+            if (requests.hasOwnProperty(i)) {
+                scheduler.cancelJob(requests[i]);
+            }
         }
     }
 };
