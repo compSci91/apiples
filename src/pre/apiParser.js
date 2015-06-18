@@ -46,7 +46,7 @@ var apiParser = {
         }
         stringToWrite = stringToWrite.substring(0, (stringToWrite.length - 2));
         var fileHeader = "module.exports = { getModels : function () { return [ ";
-        var fileFooter = ' ];}}';
+        var fileFooter = ' ];}};';
         return fileHeader + stringToWrite + fileFooter;
     }
 };

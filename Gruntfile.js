@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask('default', 'mochaTest');
+    grunt.registerTask('default', ['mochaTest', 'jshint']);
     grunt.registerTask('run',
         'Run the tests, compile the API models, browserify the client-side code',
         ['clean', 'execute', 'mochaTest', 'copy', 'browserify', 'less', 'connect']);
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
 
         jshint: {
             files: {
-                src: ['src/js/**/*.js', 'src/pre/**/*.js', 'test/**/*.js']
+                src: ['Gruntfile.js', 'src/js/**/*.js', 'src/pre/**/*.js', 'test/**/*.js']
             }
         }
     });

@@ -15,7 +15,7 @@ describe('apiParser', function () {
     var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";
 
     var fileHeader = "module.exports = { getModels : function () { return [ ";
-    var fileFooter = ' ];}}';
+    var fileFooter = ' ];}};';
 
     var mockedFileArray = ['.gitkeep', 'GET_foo.txt_bar.com'];
 
