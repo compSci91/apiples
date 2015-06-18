@@ -25,13 +25,12 @@ describe('app', function () {
         sinon.restore(scheduler);
     });
 
+    it('should have a buildNodes method', function () {
+        assert.equal(typeof app, 'object');
+        assert.equal(typeof app.buildNodes, 'function');
+    });
+
     describe('.buildNodes()', function () {
-
-        it('should have a buildNodes method', function () {
-            assert.equal(typeof app, 'object');
-            assert.equal(typeof app.buildNodes, 'function');
-        });
-
         it('should add a node to the wrapper element for every api model found by the apiParser', function () {
             var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
             var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
@@ -89,27 +88,6 @@ describe('app', function () {
             actualScheduledRequests.length.should.eql(2);
             assert(requestSchedulerSpy.calledWithMatch(mockedFooJSON, fooNode));
             assert(requestSchedulerSpy.calledWithMatch(mockedSpargonautJSON, spargonautNode));
-        });
-
-        it('should create a scheduled job with a request from the requestBuilder', function () {
-            sinon.spy(scheduler, 'scheduleJob');
-
-            var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
-            var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
-            var mockedModelArray = [mockedFooJSON, mockedSpargonautJSON];
-
-            var apiModels = require('../../../src/js/models.js');
-            sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
-
-            var callbackStub = sinon.stub();
-            var requestBuilder = require('../../../src/js/requestBuilder.js');
-            var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest').returns(callbackStub);
-
-            app.startScheduledRequests(doc);
-            // this assertion could be better
-            assert.equal(typeof scheduler.scheduleJob.getCall(0).args[1], 'function');
-
-            requestBuilderStub.restore();
         });
     });
 
