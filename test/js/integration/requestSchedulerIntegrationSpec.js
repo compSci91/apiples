@@ -5,7 +5,7 @@ var requestScheduler = require('../../../src/js/requestScheduler.js');
 var requestBuilder = require('../../../src/js/requestBuilder.js');
 
 describe('RequestSchedulerIntegration', function () {
-    describe('createScheduledJob', function () {
+    describe('.createScheduledJob()', function () {
 
         var apiModel = {
             "schedule": "* * * * *"

@@ -19,7 +19,7 @@ describe('RequestBuilder', function () {
         node = jsdom(stubbedDiv);
     });
 
-    describe('#createCallbackForFailure', function () {
+    describe('.createCallbackForFailure()', function () {
         it('should create a callback function', function () {
             var callback = requestBuilder.createCallbackForFailure();
             assert.equal(typeof callback, 'function');
@@ -36,7 +36,7 @@ describe('RequestBuilder', function () {
         });
     });
 
-    describe('#createCallbackForSuccess', function () {
+    describe('.createCallbackForSuccess()', function () {
         it('should create a callback function', function () {
             var callback = requestBuilder.createCallbackForSuccess();
             assert.equal(typeof callback, 'function');
@@ -53,13 +53,13 @@ describe('RequestBuilder', function () {
         });
     });
 
-    describe('#createAjaxBody', function () {
+    describe('.createAjaxBody()', function () {
         var some_sample_data = {
             foo: 'bar',
             biz: 'baz'
         };
 
-        context('when type is POST', function () {
+        context('...when type is POST', function () {
             it('should map the apiModel data to an ajax body as strings', function () {
                 var sampleApiModel = {
                     url: 'http://www.example.com',
@@ -84,7 +84,7 @@ describe('RequestBuilder', function () {
             });
         });
 
-        context('when type is GET', function () {
+        context('...when type is GET', function () {
             it('should map the apiModel data to an ajax body', function () {
                 var sampleApiModel = {
                     url: 'http://www.example.com',
@@ -110,7 +110,7 @@ describe('RequestBuilder', function () {
         });
     });
 
-    describe('#makeRequest', function () {
+    describe('.makeRequest()', function () {
         it('should create a callback function', function () {
             var jqueryCallback = requestBuilder.makeRequest(apiModel, node);
             assert.equal(typeof jqueryCallback, 'function');

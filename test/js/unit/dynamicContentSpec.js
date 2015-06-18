@@ -1,8 +1,8 @@
 var dynamicContent = require('../../../src/js/dynamicContent.js');
 
 describe('DynamicContent', function () {
-    describe('#generateDyamicDates', function () {
-        context('a dynamic date is specified in the data model of the apiModel', function () {
+    describe('.generateDyamicDates()', function () {
+        context('...when a dynamic date is specified in the data model of the apiModel', function () {
             it('should generate a date one day in the future', function () {
                 var moment = require('moment');
 
@@ -19,7 +19,7 @@ describe('DynamicContent', function () {
             });
         });
 
-        context('a static date is specified in the data model of the apiModel', function () {
+        context('...when a static date is specified in the data model of the apiModel', function () {
             it('should use the static date given in the data model', function () {
 
                 var staticDate = {

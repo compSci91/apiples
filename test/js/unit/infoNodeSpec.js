@@ -1,8 +1,8 @@
 var assert = require('assert');
 var infoNode = require('../../../src/js/infoNode.js');
 
-describe('infoNode', function() {
-    describe('#createInfoNode', function() {
+describe('InfoNode', function() {
+    describe('.createInfoNode()', function() {
 
         var url = "http://myurl.com";
         var expectedContentDiv = "<div class='shape-content'>FIXME</div>";

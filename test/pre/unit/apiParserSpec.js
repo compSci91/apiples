@@ -4,7 +4,7 @@ var assert = require('assert');
 
 var apiParser = require('../../../src/pre/apiParser.js');
 
-describe('apiParser', function () {
+describe('ApiParser', function () {
 
     var fs = require('fs');
 
@@ -23,7 +23,7 @@ describe('apiParser', function () {
         sinon.restore(fs);
     });
 
-    describe('#getApiRequestJSONFiles', function () {
+    describe('.getApiRequestJSONFiles()', function () {
         it('should ignore filenames that start with a dot', function () {
             sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
 
@@ -35,7 +35,7 @@ describe('apiParser', function () {
         });        
     });
 
-    describe('#getApiRequest', function () {
+    describe('.getApiRequest()', function () {
         it('should create an apiRequest object from an apiRequest.JSON file', function () {
             sinon.stub(fs, 'readFileSync').returns(mockedSpargonautFile);
 
@@ -47,7 +47,7 @@ describe('apiParser', function () {
         });
     });
 
-    describe('#getApiModels', function () {
+    describe('.getApiModels()', function () {
         it('should create an array of apiRequest Objects from the json files in the api directory', function () {
             sinon.stub(fs, 'readFileSync')
                 .onFirstCall().returns(mockedFooFile)
@@ -72,7 +72,7 @@ describe('apiParser', function () {
         });
     });
 
-    describe('#createApiModelsFile', function () {
+    describe('.createApiModelsFile()', function () {
         it('should create the models file with an api model', function () {
             sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
 

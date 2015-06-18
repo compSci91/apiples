@@ -3,13 +3,13 @@ var should = require('should');
 
 var nodeBuilder = require('../../../src/js/nodeBuilder.js');
 
-describe('nodeBuilder', function() {
+describe('NodeBuilder', function() {
     it('should keep some shit straight', function() {
         assert.equal(typeof nodeBuilder, 'object');
         assert.equal(typeof nodeBuilder.buildNodeFrom, 'function');
     });
     
-    describe('#buildNodeFrom', function() {
+    describe('.buildNodeFrom()', function() {
 
         var apiModel = { name: 'foo', url: 'http://example.com', type: 'GET' };
 
@@ -36,7 +36,7 @@ describe('nodeBuilder', function() {
         });
     });
 
-    describe('#buildErrorMessageNode', function(){
+    describe('.buildErrorMessageNode()', function(){
         it('should create an error message div telling the user they forgot to create the models file', function(){
             var errorMessage = "No API Models were found.<br>Did you generate the file?<br>Do you have any api models in the 'apis' directory?";
 

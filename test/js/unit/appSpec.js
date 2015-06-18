@@ -6,7 +6,7 @@ var jsdom = require('jsdom').jsdom;
 var app = require('../../../src/js/app.js');
 
 
-describe('app', function () {
+describe('App', function () {
 
     var nodeBuilder = require('../../../src/js/nodeBuilder.js');
     var apiModels = require('../../../src/js/models.js');
