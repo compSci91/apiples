@@ -15,7 +15,6 @@ describe('DynamicContent', function () {
                 var expectedDataModel = {
                     "departure-date": moment().add(3, "days").format("YYYY-MM-DD")
                 };
-                console.log('in test', expectedDataModel);
                 actualDataModel.should.eql(expectedDataModel);
             });
         });

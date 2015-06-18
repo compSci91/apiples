@@ -88,6 +88,8 @@ describe('app', function () {
             actualScheduledRequests.length.should.eql(2);
             assert(requestSchedulerSpy.calledWithMatch(mockedFooJSON, fooNode));
             assert(requestSchedulerSpy.calledWithMatch(mockedSpargonautJSON, spargonautNode));
+
+            requestSchedulerSpy.restore();
         });
     });
 

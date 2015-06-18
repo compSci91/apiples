@@ -1,12 +1,21 @@
 var scheduler = require('node-schedule');
 var sinon = require('sinon');
 var assert = require('assert');
+var jsdom = require('jsdom').jsdom;
 
 var requestScheduler = require('../../../src/js/requestScheduler.js');
 var requestBuilder = require('../../../src/js/requestBuilder.js');
 
 describe('RequestScheduler', function () {
-    describe('#createScheduledJob', function () {
+
+    var stubbedDiv;
+    var doc;
+    beforeEach(function () {
+        stubbedDiv = "<div id='wrapper'><button type='button'>one</button><button type='button'>two</button></div>";
+        doc = jsdom(stubbedDiv);
+    });
+
+    describe('.createScheduledJob()', function () {
 
         var schedulerStub;
         var requestBuilderStub;
@@ -47,6 +56,28 @@ describe('RequestScheduler', function () {
             var expectedSchedule = "* * * * *";
 
             assert(schedulerStub.calledWith(expectedSchedule));
+        });
+    });
+
+    describe('.startScheduledRequests()', function () {
+        it('should create a scheduled job for each model in the apiModels array', function () {
+            var requestSchedulerSpy = sinon.spy(requestScheduler, 'createScheduledJob');
+
+            var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET', schedule: '* * * * *' };
+            var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET', schedule: '* * * * *' };
+            var mockedModelArray = [mockedFooJSON, mockedSpargonautJSON];
+
+            var fooNode = doc.getElementById(mockedFooJSON.name);
+            var spargonautNode = doc.getElementById(mockedSpargonautJSON.name);
+            var apiNodes = [fooNode, spargonautNode];
+
+            requestScheduler.startScheduledRequests(mockedModelArray, apiNodes);
+
+            assert(requestSchedulerSpy.calledTwice);
+            assert(requestSchedulerSpy.calledWithMatch(mockedFooJSON, fooNode));
+            assert(requestSchedulerSpy.calledWithMatch(mockedSpargonautJSON, spargonautNode));
+
+            requestSchedulerSpy.restore();
         });
     });
 });
