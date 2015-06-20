@@ -13,7 +13,7 @@ var requestScheduler = {
             schedule = apiModel.schedule;
         }
 
-        scheduler.scheduleJob(schedule, requestBuilder.makeRequest(apiModel, node));
+        return scheduler.scheduleJob(schedule, requestBuilder.makeRequest(apiModel, node));
     },
 
     startScheduledRequests : function (apiModels, nodes) {
@@ -26,9 +26,10 @@ var requestScheduler = {
     },
 
     stopScheduledRequests : function () {
-        for(var i in scheduledJobs) {
-            scheduler.cancelJob(scheduledJobs[i]);
-        }
+        scheduledJobs.forEach(function (job) {
+            scheduler.cancelJob(job);
+        });
+        scheduledJobs = [];
     }
 };
 

@@ -11,9 +11,12 @@ describe('App', function () {
     var nodeBuilder = require('../../../src/js/nodeBuilder.js');
     var apiModels = require('../../../src/js/models.js');
     var scheduler = require('node-schedule');
+    var requestScheduler = require('../../../src/js/requestScheduler.js');
 
     var stubbedDiv;
     var doc;
+    var requestSchedulerStub;
+
     beforeEach(function () {
         stubbedDiv = "<div id='wrapper'><button type='button'>one</button><button type='button'>two</button></div>";
         doc = jsdom(stubbedDiv);
@@ -23,6 +26,9 @@ describe('App', function () {
         sinon.restore(nodeBuilder);
         sinon.restore(apiModels);
         sinon.restore(scheduler);
+        if (requestSchedulerStub) {
+            requestSchedulerStub.restore();
+        }
     });
 
     it('should have a buildNodes method', function () {
@@ -70,9 +76,8 @@ describe('App', function () {
     });
 
     describe('.startScheduledRequests()', function () {
-        it('should create a scheduled job for each api node', function () {
-            var requestScheduler = require('../../../src/js/requestScheduler.js');
-            var requestSchedulerSpy = sinon.spy(requestScheduler, 'createScheduledJob');
+        it('should create scheduled api requests for the api nodes', function () {
+            requestSchedulerStub = sinon.stub(requestScheduler, 'startScheduledRequests', function () {});
 
             var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
             var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
@@ -83,27 +88,22 @@ describe('App', function () {
 
             var fooNode = doc.getElementById(mockedFooJSON.name);
             var spargonautNode = doc.getElementById(mockedSpargonautJSON.name);
-            var actualScheduledRequests = app.startScheduledRequests(doc);
+            var nodeArray = [fooNode, spargonautNode];
 
-            actualScheduledRequests.length.should.eql(2);
-            assert(requestSchedulerSpy.calledWithMatch(mockedFooJSON, fooNode));
-            assert(requestSchedulerSpy.calledWithMatch(mockedSpargonautJSON, spargonautNode));
+            app.startScheduledRequests(doc);
 
-            requestSchedulerSpy.restore();
+            assert(requestSchedulerStub.calledWith(mockedModelArray, nodeArray));
+            requestSchedulerStub.restore();
         });
     });
 
     describe('.stopScheduledRequests()', function () {
-        it('should do something', function () {
-            var schedulerSpy = sinon.spy(scheduler, 'cancelJob');
+        it('should stop the scheduled requests', function () {
+            requestSchedulerStub = sinon.spy(requestScheduler, 'stopScheduledRequests');
 
-            var scheduledJobOne = {};
-            var scheduledJobTwo = {};
-            var requests = [scheduledJobOne, scheduledJobTwo];
-
-            app.stopScheduledRequests(requests);
-            assert(schedulerSpy.calledTwice);
-
+            app.stopScheduledRequests();
+            assert(requestSchedulerStub.calledOnce);
+            requestSchedulerStub.restore();
         });
     });
 });

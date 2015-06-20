@@ -1,7 +1,5 @@
 var nodeBuilder = require('./nodeBuilder.js');
 var models = require('./models.js');
-var scheduler = require('node-schedule');
-
 var requestScheduler = require('./requestScheduler.js');
 
 var app = {
@@ -29,23 +27,20 @@ var app = {
         var apiRequests = [];
         var apiModels = models.getModels();
 
+        var nodes = [];
         for (var i in apiModels) {
             if (apiModels.hasOwnProperty(i)) {
                 var node = doc.getElementById(apiModels[i].name);
-                var scheduledJob = requestScheduler.createScheduledJob(apiModels[i], node);
-                apiRequests.push(scheduledJob);
+                nodes.push(node);
             }
         }
+        requestScheduler.startScheduledRequests(apiModels, nodes);
         return apiRequests;
     },
 
-    stopScheduledRequests : function (requests) {
+    stopScheduledRequests : function () {
         console.log('stopping the scheduled requests!');
-        for (var i in requests) {
-            if (requests.hasOwnProperty(i)) {
-                scheduler.cancelJob(requests[i]);
-            }
-        }
+        requestScheduler.stopScheduledRequests();
     }
 };
 

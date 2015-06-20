@@ -16,7 +16,7 @@ describe('App Integration', function () {
 
     describe('.startScheduledRequests()', function () {
         it('should create a scheduled job with a request from the requestBuilder', function () {
-            sinon.spy(scheduler, 'scheduleJob');
+            var schedulerStub = sinon.spy(scheduler, 'scheduleJob');
 
             var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
             var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
@@ -34,7 +34,26 @@ describe('App Integration', function () {
             assert.equal(typeof scheduler.scheduleJob.getCall(0).args[1], 'function');
 
             requestBuilderStub.restore();
+            schedulerStub.restore();
         });
     });
 
+    describe('.stopScheduledRequests()', function () {
+
+        context('...when jobs have been started', function () {
+            it('should stop the scheduled requests', function () {
+                var scheduledJobOne = {};
+                var scheduledJobTwo = {};
+                sinon.stub(scheduler, 'scheduleJob')
+                    .onFirstCall().returns(scheduledJobOne)
+                    .onSecondCall().returns(scheduledJobTwo);
+
+                var schedulerSpy = sinon.spy(scheduler, 'cancelJob');
+
+                app.stopScheduledRequests();
+                assert(schedulerSpy.calledTwice);
+
+            });
+        });
+    });
 });
