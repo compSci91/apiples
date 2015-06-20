@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         mochaTest : {
             test : {
                 options : {
-                    reporter : 'spec',
+                    reporter : 'dot',
                     quiet : false,
                     clearRequireCache : false
                 },
