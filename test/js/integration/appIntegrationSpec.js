@@ -23,7 +23,7 @@ describe('App Integration', function () {
             var mockedModelArray = [mockedFooJSON, mockedSpargonautJSON];
 
             var apiModels = require('../../../src/js/models.js');
-            sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
+            var apiModelsStub = sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
 
             var callbackStub = sinon.stub();
             var requestBuilder = require('../../../src/js/requestBuilder.js');
@@ -35,6 +35,7 @@ describe('App Integration', function () {
 
             requestBuilderStub.restore();
             schedulerStub.restore();
+            apiModelsStub.restore();
         });
     });
 
@@ -44,7 +45,7 @@ describe('App Integration', function () {
             it('should stop the scheduled requests', function () {
                 var scheduledJobOne = {};
                 var scheduledJobTwo = {};
-                sinon.stub(scheduler, 'scheduleJob')
+                var schedulerStub = sinon.stub(scheduler, 'scheduleJob')
                     .onFirstCall().returns(scheduledJobOne)
                     .onSecondCall().returns(scheduledJobTwo);
 
@@ -53,6 +54,8 @@ describe('App Integration', function () {
                 app.stopScheduledRequests();
                 assert(schedulerSpy.calledTwice);
 
+                schedulerSpy.restore();
+                schedulerStub.stub.restore();
             });
         });
     });

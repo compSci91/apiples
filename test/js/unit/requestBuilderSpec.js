@@ -127,6 +127,7 @@ describe('RequestBuilder', function () {
                 //jqueryCallback();
 
                 assert(jqueryStub.calledOnce);
+                jqueryStub.restore();
             });
         });
     });

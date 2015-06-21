@@ -17,36 +17,37 @@ describe('RequestScheduler', function () {
 
     describe('.createScheduledJob()', function () {
 
-        var schedulerStub;
-        var requestBuilderStub;
-
-        beforeEach(function () {
-            schedulerStub = sinon.stub(scheduler, 'scheduleJob');
-            requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest');
-        });
-
-        afterEach(function () {
-            schedulerStub.restore();
-            requestBuilderStub.restore();
-        });
-
-
         it('should create a scheduled job', function () {
+            var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest');
+            var schedulerStub = sinon.stub(scheduler, 'scheduleJob');
+
             var apiModel = {};
 
             requestScheduler.createScheduledJob(apiModel);
             assert(schedulerStub.calledOnce);
+
+            schedulerStub.restore();
+            requestBuilderStub.restore();
         });
 
         it('should create a schedule that defaults to every 5 minutes', function () {
+            var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest');
+            var schedulerStub = sinon.stub(scheduler, 'scheduleJob');
+
             var defaultSchedule = '*/5 * * * *';
             var apiModel = {};
 
             requestScheduler.createScheduledJob(apiModel);
             assert(schedulerStub.calledWith(defaultSchedule));
+
+            schedulerStub.restore();
+            requestBuilderStub.restore();
         });
 
         it('should use the schedule defined in the apiModel', function () {
+            var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest');
+            var schedulerStub = sinon.stub(scheduler, 'scheduleJob');
+
             var apiModel = {
                 "schedule": "* * * * *"
             };
@@ -56,11 +57,15 @@ describe('RequestScheduler', function () {
             var expectedSchedule = "* * * * *";
 
             assert(schedulerStub.calledWith(expectedSchedule));
+
+            requestBuilderStub.restore();
+            schedulerStub.restore();
         });
     });
 
     describe('.startScheduledRequests()', function () {
         it('should create a scheduled job for each model in the apiModels array', function () {
+            var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest');
             var requestSchedulerSpy = sinon.spy(requestScheduler, 'createScheduledJob');
 
             var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET', schedule: '* * * * *' };
@@ -78,14 +83,20 @@ describe('RequestScheduler', function () {
             assert(requestSchedulerSpy.calledWithMatch(mockedSpargonautJSON, spargonautNode));
 
             requestSchedulerSpy.restore();
+            requestBuilderStub.restore();
         });
     });
 
     describe('.stopScheduledRequests()', function () {
         it('should cancel the scheduled jobs', function () {
+            var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest');
             var schedulerSpy = sinon.spy(scheduler, 'cancelJob');
+
             requestScheduler.stopScheduledRequests();
             assert(schedulerSpy.calledTwice);
+
+            schedulerSpy.restore();
+            requestBuilderStub.restore();
         });
 
     });
