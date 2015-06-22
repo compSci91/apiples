@@ -9,6 +9,7 @@ var requestBuilder = {
         var successCallback = this.createCallbackForSuccess(node);
 
         return function () {
+            node.className = 'shape pending';
             jquery.ajax(ajaxBody)
             .fail(failureCallback)
             .done(successCallback);

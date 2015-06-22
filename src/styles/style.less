@@ -1,6 +1,6 @@
-@goodColor: #0d0;
-@badColor: #f00;
-@timedOutColor: #ff0;
+@successColor: #0d0;
+@failColor: #f00;
+@pendingColor: #ff0;
 @unknownStateColor: #ccc;
 
 @defaultCornerRadius: 30px;
@@ -45,9 +45,13 @@ body {
 }
 
 .failed {
-  background: @badColor;
+  background: @failColor;
 }
 
 .success {
-  background: @goodColor;
+  background: @successColor;
+}
+
+.pending {
+  background: @pendingColor;
 }

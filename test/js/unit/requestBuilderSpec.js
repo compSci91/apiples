@@ -1,6 +1,6 @@
 var assert = require('assert');
 var jsdom = require('jsdom').jsdom;
-var sinon = require('sinon');
+var proxyquire = require('proxyquire');
 
 var requestBuilder = require('../../../src/js/requestBuilder.js');
 
@@ -117,17 +117,59 @@ describe('RequestBuilder', function () {
         });
 
         describe('the jquery callback', function () {
-            xit('should make the call with the ajax body', function () {
-                var jsdom = require('jsdom');
-                var jquery = require('jquery')(jsdom.jsdom().defaultView);
 
-                var jqueryStub = sinon.stub(jquery, 'ajax');
+            it('should update the node to include the \'failed\' classname', function (done) {
 
-                var jqueryCallback = requestBuilder.makeRequest(apiModel, node);
-                //jqueryCallback();
+                var optionsSentToAjax = {};
 
-                assert(jqueryStub.calledOnce);
-                jqueryStub.restore();
+                var mockJquery = {
+                    ajax: function (options) {
+                        optionsSentToAjax = options;
+                        return {
+                            fail: function () { return { done : function () {}};}
+                        };
+                    }
+                };
+
+                var requestBuilderProxy = proxyquire('../../../src/js/requestBuilder.js', {
+                    'jquery': mockJquery
+                });
+                var docHtml = '<html>' + stubbedDiv + '<html>';
+                var jsdom = require('jsdom').jsdom(docHtml);
+
+                var nodeUnderTest = jsdom.getElementById('foo');
+
+                var jqueryCallback = requestBuilderProxy.makeRequest(apiModel, nodeUnderTest);
+                jqueryCallback();
+                done();
+
+
+                var expectedClassName = 'shape pending';
+                nodeUnderTest.className.should.eql(expectedClassName);
+            });
+
+            it('should make the call with the ajax body', function (done) {
+                var optionsSentToAjax = {};
+
+                var mockJquery = {
+                    ajax: function (options) {
+                        optionsSentToAjax = options;
+                        return {
+                            fail: function () { return { done : function () {}};}
+                        };
+                    }
+                };
+
+                var requestBuilderProxy = proxyquire('../../../src/js/requestBuilder.js', {
+                    'jquery': mockJquery
+                });
+
+                var jqueryCallback = requestBuilderProxy.makeRequest(apiModel, node);
+                jqueryCallback();
+                done();
+
+                optionsSentToAjax.url.should.eql('http://www.example.com');
+                optionsSentToAjax.type.should.eql('GET');
             });
         });
     });
