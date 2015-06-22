@@ -19,41 +19,41 @@ describe('ApiParser', function () {
 
     var mockedFileArray = ['.gitkeep', 'GET_foo.txt_bar.com'];
 
-    afterEach(function() {
-        sinon.restore(fs);
-    });
-
     describe('.getApiRequestJSONFiles()', function () {
         it('should ignore filenames that start with a dot', function () {
-            sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
+            var fsStub = sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
 
             var actualApiRequestArray = apiParser.getApiRequestJSONFiles();
 
             var expectedApiRequestArray = ['GET_foo.txt_bar.com'];
 
             actualApiRequestArray.should.eql(expectedApiRequestArray);
+
+            fsStub.restore();
         });        
     });
 
     describe('.getApiRequest()', function () {
         it('should create an apiRequest object from an apiRequest.JSON file', function () {
-            sinon.stub(fs, 'readFileSync').returns(mockedSpargonautFile);
+            var fsStub = sinon.stub(fs, 'readFileSync').returns(mockedSpargonautFile);
 
             var actualApiJSON = apiParser.getApiRequest(spargonautFileName);
 
             var expectedJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
 
             actualApiJSON.should.eql(expectedJSON);
+
+            fsStub.restore();
         });
     });
 
     describe('.getApiModels()', function () {
         it('should create an array of apiRequest Objects from the json files in the api directory', function () {
-            sinon.stub(fs, 'readFileSync')
+            var fsReadFileStub = sinon.stub(fs, 'readFileSync')
                 .onFirstCall().returns(mockedFooFile)
                 .onSecondCall().returns(mockedSpargonautFile);
 
-            sinon.stub(fs, 'readdirSync').returns([fooFileName, spargonautFileName]);
+            var fsReadDirStub = sinon.stub(fs, 'readdirSync').returns([fooFileName, spargonautFileName]);
 
             var expectedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
             var expectedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
@@ -61,6 +61,9 @@ describe('ApiParser', function () {
 
             var actualArray = apiParser.getApiModels();
             actualArray.should.eql(expectedArray);
+
+            fsReadDirStub.restore();
+            fsReadFileStub.stub.restore();
         });
 
         it('should validate the API models', function () {
@@ -69,32 +72,40 @@ describe('ApiParser', function () {
 
             apiParser.getApiModels();
             assert(validatorStub.called);
+
+            validatorStub.restore();
         });
     });
 
     describe('.createApiModelsFile()', function () {
         it('should create the models file with an api model', function () {
-            sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
+            var fsReadDirStub = sinon.stub(fs, 'readdirSync').returns(mockedFileArray);
 
             var mockedFooFile = "{\"name\":\"foo\",\"url\":\"http://example.com\",\"type\":\"GET\"}";
-            sinon.stub(fs, 'readFileSync').returns(mockedFooFile);
+            var fsReadFileStub = sinon.stub(fs, 'readFileSync').returns(mockedFooFile);
 
             var apiModels = apiParser.createApiModelsFile();
             var expectedApiModels = fileHeader + mockedFooFile + fileFooter;
             apiModels.should.eql(expectedApiModels);
+
+            fsReadDirStub.restore();
+            fsReadFileStub.restore();
         });
 
         it('should separate multiple api models by a comma', function () {
 
-            sinon.stub(fs, 'readdirSync').returns([fooFileName, spargonautFileName]);
+            var fsReadDirStub = sinon.stub(fs, 'readdirSync').returns([fooFileName, spargonautFileName]);
 
-            sinon.stub(fs, 'readFileSync')
+            var fsReadFileStub = sinon.stub(fs, 'readFileSync')
                 .onFirstCall().returns(mockedFooFile)
                 .onSecondCall().returns(mockedSpargonautFile);
 
             var expectedApiModels = fileHeader + mockedFooFile + ", " + mockedSpargonautFile + fileFooter;
             var apiModels = apiParser.createApiModelsFile();
             apiModels.should.eql(expectedApiModels);
+
+            fsReadDirStub.restore();
+            fsReadFileStub.stub.restore();
         });
     });
 });
