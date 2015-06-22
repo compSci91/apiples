@@ -117,23 +117,26 @@ describe('RequestBuilder', function () {
         });
 
         describe('the jquery callback', function () {
+            var optionsSentToAjax = {};
+            var mockJquery = {};
+            var requestBuilderProxy = {};
 
-            it('should update the node to include the \'failed\' classname', function (done) {
-
-                var optionsSentToAjax = {};
-
-                var mockJquery = {
+            beforeEach(function () {
+                mockJquery = {
                     ajax: function (options) {
                         optionsSentToAjax = options;
-                        return {
-                            fail: function () { return { done : function () {}};}
-                        };
-                    }
+                        return this;
+                    },
+                    fail : function () { return this; },
+                    done : function () { return this; }
                 };
 
-                var requestBuilderProxy = proxyquire('../../../src/js/requestBuilder.js', {
+                requestBuilderProxy = proxyquire('../../../src/js/requestBuilder.js', {
                     'jquery': mockJquery
                 });
+            });
+
+            it('should update the node to include the \'failed\' classname', function (done) {
                 var docHtml = '<html>' + stubbedDiv + '<html>';
                 var jsdom = require('jsdom').jsdom(docHtml);
 
@@ -143,27 +146,11 @@ describe('RequestBuilder', function () {
                 jqueryCallback();
                 done();
 
-
                 var expectedClassName = 'shape pending';
                 nodeUnderTest.className.should.eql(expectedClassName);
             });
 
             it('should make the call with the ajax body', function (done) {
-                var optionsSentToAjax = {};
-
-                var mockJquery = {
-                    ajax: function (options) {
-                        optionsSentToAjax = options;
-                        return {
-                            fail: function () { return { done : function () {}};}
-                        };
-                    }
-                };
-
-                var requestBuilderProxy = proxyquire('../../../src/js/requestBuilder.js', {
-                    'jquery': mockJquery
-                });
-
                 var jqueryCallback = requestBuilderProxy.makeRequest(apiModel, node);
                 jqueryCallback();
                 done();
