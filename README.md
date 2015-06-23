@@ -29,7 +29,7 @@ Simple as that.
 
 ## To install and/or run:
 - Create API models and save them in the 'apis' directory
-- from the command line:  
+- from the command line (note: you'll need grunt-cli installed globally):  
   > npm install  
   > grunt run  
 - Open a browser and navigate to: localhost:9000   
@@ -41,8 +41,8 @@ Simple as that.
 
 ### About the API models that YOU need to create  
 Yea, you've got a little legwork to make this app do your bidding.  
-Create a file in the api's directory, a separate one for each API you want to monitor.  
-That file needs to be in a json structure, and it understands the following format:  
+For each API call that you want to monitor, you'll need to create a separate json file and copy it to the 'apis' directory.  
+The api models need to be in the following format:    
 
     {
         "name" : "this is the name that you want to appear in the box in your browser window.  it has to be unique....  and don't make it too long",
@@ -50,11 +50,14 @@ That file needs to be in a json structure, and it understands the following form
         "type" : "your request verb.... i.e. GET, POST, etc",
         "contentType" : "need to specify a content-type?  we got ya covered",
         "data" : "the data you're wanting to send, like, for a POST",
-        "dataType" : "kinda self explanatory"
+        "dataType" : "kinda self explanatory",
+        "schedule": "*/1 * * * *"
     }
 The values (i.e. values on the right of the semicolon) are semi-optional (except 'name' and 'url'), the values on the left are not.
 Most of these values map directly to a jquery.ajax body; feel free to browse that documentation for more information.
  
+
+
 #### Dynamic Dates
 Apiples has the ability to generate dynamic dates for key/value pairs in your 'data' block.  For example, lets say today's date is June 18th of 2015.
 In the API call, you need information for a date in the future, so you hardcode that date in your apiModel file.
@@ -70,6 +73,11 @@ For example, if you put this as the value block to your 'data' key:
 The date generated for the request call would use a date two days in the future in the format of 'YYYY-MM-DD'
 
 
+
+#### Schedule
+Apiples uses a cron-type schedule as defined by [node-schedule](https://www.npmjs.com/package/node-schedule).  
+The schedule included in the example above fires off an API request once every minute.  
+If you omit the schedule key/value pair, it will use the default value of once every 5 minutes.  
 
 
 Note:
