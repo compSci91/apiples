@@ -2,6 +2,7 @@
   "name": "apiples",
   "version": "0.0.1",
   "author": "James Spargo",
+  "license": "MIT",
   "repository": {
     "type": "git"
   },
