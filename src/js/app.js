@@ -1,6 +1,7 @@
 var nodeBuilder = require('./nodeBuilder.js');
 var models = require('./models.js');
 var requestScheduler = require('./requestScheduler.js');
+var requestBuilder = require('./requestBuilder');
 
 var app = {
 
@@ -20,6 +21,17 @@ var app = {
             }
         }
         wrapperElement.innerHTML = allNodesHtml;
+
+        this.addOnDemandRequest(doc, apiModels);
+    },
+
+    addOnDemandRequest : function (doc, apiModels) {
+        var node;
+        for (var i = 0; i < apiModels.length; i++) {
+            node = doc.getElementById(apiModels[i].name);
+            var request = requestBuilder.makeRequest(apiModels[i], node);
+            node.addEventListener('click', request);
+        }
     },
 
     startScheduledRequests : function (doc) {

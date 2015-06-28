@@ -26,8 +26,8 @@ describe('App', function () {
             var apiModels = require('../../../src/js/models.js');
             var apiModelsStub = sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
 
-            var mockedFooHtml = '<div class="shape-content">foo</div>';
-            var mockedSpargonautHtml = '<div class="shape-content">spargonaut</div>';
+            var mockedFooHtml = "<div id='foo' class='shape-content'>foo</div>";
+            var mockedSpargonautHtml = "<div id='spargonaut' class='shape-content'>spargonaut</div>";
 
             var nodeBuilderStub = sinon.stub(nodeBuilder, 'buildNodeFrom')
                 .onFirstCall().returns(mockedFooHtml)
@@ -35,7 +35,7 @@ describe('App', function () {
 
             app.buildNodes(doc);
             var actualDiv = doc.getElementById('wrapper').innerHTML;
-            var expectedDiv = '<button type="button">one</button><button type="button">two</button><div class="shape-content">foo</div><div class="shape-content">spargonaut</div>';
+            var expectedDiv = '<button type="button">one</button><button type="button">two</button><div id="foo" class="shape-content">foo</div><div id="spargonaut" class="shape-content">spargonaut</div>';
 
             actualDiv.should.eql(expectedDiv);
 
@@ -63,6 +63,39 @@ describe('App', function () {
 
             apiModelsStub.restore();
             nodeBuilderStub.restore();
+        });
+
+        it('should add a click event listener to each node', function () {
+            var stubbedDiv =
+                "<div id='wrapper'>" +
+                    "<button type='button'>one</button><button type='button'>two</button>" +
+                    "<div id='foo' class='shape-content'>foo</div>" +
+                    "<div id='spargonaut' class='shape-content'>spargonaut</div>" +
+                "</div>";
+            var doc = jsdom(stubbedDiv);
+            var nodeBuilder = require('../../../src/js/nodeBuilder.js');
+
+            var mockedFooJSON = { name: 'foo', url: 'http://example.com', type: 'GET' };
+            var mockedSpargonautJSON = { name: 'spargonaut', url: 'http://spargonaut.com', type: 'GET' };
+            var mockedModelArray = [mockedFooJSON, mockedSpargonautJSON];
+
+            var apiModels = require('../../../src/js/models.js');
+            var apiModelsStub = sinon.stub(apiModels, 'getModels').returns(mockedModelArray);
+
+            var mockClickFunction = function () {};
+
+            var requestBuilder = require('../../../src/js/requestBuilder.js');
+            var requestBuilderStub = sinon.stub(requestBuilder, 'makeRequest').returns(mockClickFunction);
+
+            app.addOnDemandRequest(doc, mockedModelArray);
+
+            var fooNode = doc.getElementById('foo');
+            var fooListenerFunction = fooNode._listeners.click.false[0];
+
+            fooListenerFunction.should.eql(mockClickFunction);
+
+            apiModelsStub.restore();
+            requestBuilderStub.restore();
         });
     });
 
